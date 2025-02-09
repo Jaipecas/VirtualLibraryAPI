@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VirtualLibrary.Business\VirtualLibrary.Business.csproj" />
+    <ProjectReference Include="..\VirtualLibrary.Business\VirtualLibrary.Application.csproj" />
     <ProjectReference Include="..\VirtualLibrary.Persistence\VirtualLibrary.Persistence.csproj" />
   </ItemGroup>
 
