@@ -9,6 +9,11 @@ namespace VirtualLibrary.Persistence.Contexts
     {
         public VirtualLibraryDbContext(DbContextOptions<VirtualLibraryDbContext> options) : base(options) { }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);         
+        }
+
         public DbSet<Product> Products { get; set; }
     }
 }
