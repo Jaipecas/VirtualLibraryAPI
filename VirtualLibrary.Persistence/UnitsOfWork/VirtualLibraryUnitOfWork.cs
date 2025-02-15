@@ -8,11 +8,13 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
     {
         private readonly VirtualLibraryDbContext _virtualLibraryDbContext;
         public IProducts Products {get;}
+        public IUserRepository Users { get;}
 
-        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IProducts products)
+        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IProducts products, IUserRepository users)
         {
             _virtualLibraryDbContext = VirtualLibraryDbContext;
             Products = products;
+            Users = users;
         }
 
         public async Task<int> SaveChanges() => await _virtualLibraryDbContext.SaveChangesAsync();
