@@ -12,6 +12,7 @@ using VirtualLibrary.Persistence.Contexts;
 using VirtualLibrary.Persistence.Repositories;
 using VirtualLibrary.Persistence.Service;
 using VirtualLibrary.Persistence.UnitsOfWork;
+using static VirtualLibrary.Application.Features.Auth.Commands.SignInFeature;
 
 var builder = WebApplication.CreateBuilder(args);
 

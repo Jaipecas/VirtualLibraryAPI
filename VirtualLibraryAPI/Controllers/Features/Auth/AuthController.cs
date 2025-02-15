@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using VirtualLibrary.Application.Features.Auth.Commands;
+using static VirtualLibrary.Application.Features.Auth.Commands.SignUpFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.Auth
 {
