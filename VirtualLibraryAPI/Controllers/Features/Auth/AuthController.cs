@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using VirtualLibrary.Application.Features.Auth.Commands;
+using static VirtualLibrary.Application.Features.Auth.Commands.SignInFeature;
+using static VirtualLibrary.Application.Features.Auth.Commands.SignUpFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.Auth
 {
@@ -17,6 +18,14 @@ namespace VirtualLibraryAPI.Controllers.Features.Auth
 
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp(SignUpCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return result;
+        }
+
+        [HttpPost("signin")]
+        public async Task<IActionResult> SignIn(SignInCommand command)
         {
             var result = await _mediator.Send(command);
 

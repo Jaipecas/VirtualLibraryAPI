@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using VirtualLibrary.Application.Features;
+using VirtualLibrary.Application.Features.Auth.Commands;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Application.Persistence.Repositories;
 using VirtualLibrary.Application.Persistence.Services;
@@ -11,6 +12,7 @@ using VirtualLibrary.Persistence.Contexts;
 using VirtualLibrary.Persistence.Repositories;
 using VirtualLibrary.Persistence.Service;
 using VirtualLibrary.Persistence.UnitsOfWork;
+using static VirtualLibrary.Application.Features.Auth.Commands.SignInFeature;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +52,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddProductHandle>());
+builder.Services.AddAutoMapper(typeof(SignInProfile).Assembly);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
