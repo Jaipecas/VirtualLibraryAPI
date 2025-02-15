@@ -1,10 +1,10 @@
 ﻿
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
-using VirtualLibrary.Application.Persistence.Repositories;
 using VirtualLibrary.Application.Persistence.Services;
 
 namespace VirtualLibrary.Application.Features.Auth.Commands
@@ -33,27 +33,41 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
         public required string UserName { get; set; }
     }
 
+    public class SignUpProfile : Profile
+    {
+        public SignUpProfile()
+        {
+            CreateMap<IdentityUser, SignUpDto>();
+        }
+    }
+
     public class SignUpCommandHandler : IRequestHandler<SignUpCommand, IActionResult>
     {
         private readonly IVirtualLibraryUnitOfWork _virtualLibraryUnitOfWork ;
         private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
 
-        public SignUpCommandHandler(IVirtualLibraryUnitOfWork virtualLibraryUnitOfWork, IAuthService authService)
+        public SignUpCommandHandler(IVirtualLibraryUnitOfWork virtualLibraryUnitOfWork, IAuthService authService, IMapper mapper)
         {
             _virtualLibraryUnitOfWork = virtualLibraryUnitOfWork;
             _authService = authService;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
             var user = new IdentityUser { UserName = request.UserName, Email = request.Email };
-            var result = await _virtualLibraryUnitOfWork.Users.CreateAsync(user, request.Password);
+            var identityResult = await _virtualLibraryUnitOfWork.Users.CreateAsync(user, request.Password);
 
-            if (!result.Succeeded) return new BadRequestObjectResult(result.Errors);
+            if (!identityResult.Succeeded) return new BadRequestObjectResult(identityResult.Errors);
+
+            var result = _mapper.Map<IdentityUser, SignUpDto>(user);
 
             var token = await _authService.GenerateJwtToken(user);
 
-            return new OkObjectResult(new SignUpDto { UserName = request.UserName, Email = request.Email, Token = token! });
+            result.Token = token!;
+
+            return new OkObjectResult(result);
         }
     }
 }
