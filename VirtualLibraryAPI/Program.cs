@@ -18,8 +18,8 @@ builder.Services.AddScoped<IVirtualLibraryUnitOfWork, VirtualLibraryUnitOfWork>(
 builder.Services.AddScoped<IProducts, ProductRepository>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<VirtualLibraryDbContext>()
-    .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<VirtualLibraryDbContext>()
+                .AddDefaultTokenProviders();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddProductHandle>());
 
