@@ -23,7 +23,7 @@ namespace VirtualLibrary.Application.Features
     {
         private readonly IVirtualLibraryUnitOfWork _unitOFwork;
 
-        public AddProductHandle(IVirtualLibraryUnitOfWork unitOFwork, IHttpContextAccessor httpContextAccessor)
+        public AddProductHandle(IVirtualLibraryUnitOfWork unitOFwork)
         {
             _unitOFwork = unitOFwork;
         }
@@ -34,7 +34,7 @@ namespace VirtualLibrary.Application.Features
 
             await _unitOFwork.Products.Add(product);
 
-            var response = await _unitOFwork.Save();
+            var response = await _unitOFwork.SaveChanges();
 
             return response > 0 ? Unit.Value : throw new Exception("No se insertó el Product");
         }

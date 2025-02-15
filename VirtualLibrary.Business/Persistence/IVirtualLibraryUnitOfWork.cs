@@ -7,9 +7,9 @@ using VirtualLibrary.Application.Persistence.Repositories;
 
 namespace VirtualLibrary.Application.Persistence
 {
-    public interface IVirtualLibraryUnitOfWork : IDisposable
+    public interface IVirtualLibraryUnitOfWork
     {
         IProducts Products { get; }
-        Task<int> Save();
+        Task<int> SaveChanges();
     }
 }

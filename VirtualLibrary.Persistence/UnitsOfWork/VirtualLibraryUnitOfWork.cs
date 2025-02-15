@@ -15,8 +15,6 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
             Products = products;
         }
 
-        public async Task<int> Save() => await _virtualLibraryDbContext.SaveChangesAsync();
-
-        public void Dispose() => _virtualLibraryDbContext.Dispose();
+        public async Task<int> SaveChanges() => await _virtualLibraryDbContext.SaveChangesAsync();
     }
 }
