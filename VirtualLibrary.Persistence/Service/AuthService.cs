@@ -60,5 +60,18 @@ namespace VirtualLibrary.Persistence.Service
 
             _httpContextAccessor.HttpContext!.Response.Cookies.Append("jwt", token, cookieOptions);
         }
+
+        public void RemoveAuthCookie()
+        {
+            var cookieOptions = new CookieOptions
+            {
+                Expires = DateTime.UtcNow.AddDays(-1),
+                HttpOnly = true,
+                Secure = true, 
+                SameSite = SameSiteMode.Strict
+            };
+
+            _httpContextAccessor.HttpContext!.Response.Cookies.Append("jwt", "", cookieOptions);
+        }
     }
 }

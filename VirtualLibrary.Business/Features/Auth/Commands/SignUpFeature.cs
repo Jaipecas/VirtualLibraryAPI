@@ -34,7 +34,7 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
 
                 var token = await _authService.GenerateJwtToken(user);
 
-                result.Token = token!;
+                _authService.SetAuthCookie(token!);
 
                 return new OkObjectResult(result);
             }

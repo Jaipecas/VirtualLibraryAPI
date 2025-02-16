@@ -8,5 +8,6 @@ namespace VirtualLibrary.Application.Persistence.Services
     {
         Task<string?> GenerateJwtToken(IdentityUser user);
         void SetAuthCookie(string token);
+        void RemoveAuthCookie();
     }
 }
