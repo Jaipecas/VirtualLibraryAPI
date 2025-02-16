@@ -27,17 +27,17 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
             {
                 var user = await _virtualLibraryUnitOfWork.Users.FindByEmailAsync(request.Email);
 
-                if (user == null) return new UnauthorizedObjectResult("Invalid login credentials");
+                if (user == null) return new UnauthorizedObjectResult(new { errorMessage = "Invalid login credentials" });
 
                 var isUser = await _virtualLibraryUnitOfWork.Users.CheckPasswordAsync(user, request.Password);
 
-                if (isUser == false) return new UnauthorizedObjectResult("Invalid login credentials");
+                if (isUser == false) return new UnauthorizedObjectResult(new { errorMessage = "Invalid login credentials" });
 
                 var result = _mapper.Map<IdentityUser, SignInDto>(user);
 
                 var token = await _authService.GenerateJwtToken(user);
 
-                result.Token = token!;
+                _authService.SetAuthCookie(token!);
 
                 return new OkObjectResult(result);
             }
