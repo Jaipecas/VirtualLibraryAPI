@@ -38,5 +38,10 @@ namespace VirtualLibrary.Persistence.Repositories
         {
             return await _userManager.UpdateAsync(user);
         }
+
+        public async Task<User?> FindByNameAsync(string userName)
+        {
+            return await _userManager.FindByNameAsync(userName);
+        }
     }
 }

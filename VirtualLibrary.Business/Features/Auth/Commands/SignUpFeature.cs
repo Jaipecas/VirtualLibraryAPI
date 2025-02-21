@@ -1,7 +1,6 @@
 ﻿
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Application.Persistence.Services;
