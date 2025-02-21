@@ -3,26 +3,26 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using VirtualLibrary.Application.Persistence.Services;
+using VirtualLibrary.Domain;
 
 namespace VirtualLibrary.Persistence.Service
 {
     public class AuthService : IAuthService
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AuthService(UserManager<IdentityUser> userManager, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public AuthService(UserManager<User> userManager, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<string?> GenerateJwtToken(IdentityUser user)
+        public async Task<string?> GenerateJwtToken(User user)
         {
             var userRoles = await _userManager.GetRolesAsync(user);
 

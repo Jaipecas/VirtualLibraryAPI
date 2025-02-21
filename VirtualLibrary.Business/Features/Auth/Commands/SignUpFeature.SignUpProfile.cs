@@ -1,6 +1,6 @@
 ﻿
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+using VirtualLibrary.Domain;
 
 namespace VirtualLibrary.Application.Features.Auth.Commands
 {
@@ -10,7 +10,7 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
         {
             public SignUpProfile()
             {
-                CreateMap<IdentityUser, SignUpDto>();
+                CreateMap<User, SignUpDto>();
             }
         }
     }

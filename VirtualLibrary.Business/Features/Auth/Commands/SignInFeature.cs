@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Application.Persistence.Services;
+using VirtualLibrary.Domain;
 
 namespace VirtualLibrary.Application.Features.Auth.Commands
 {
@@ -33,7 +34,7 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
 
                 if (isUser == false) return new UnauthorizedObjectResult(new { errorMessage = "Invalid login credentials" });
 
-                var result = _mapper.Map<IdentityUser, SignInDto>(user);
+                var result = _mapper.Map<SignInDto>(user);
 
                 var token = await _authService.GenerateJwtToken(user);
 

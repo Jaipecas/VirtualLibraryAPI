@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Application.Persistence.Services;
+using VirtualLibrary.Domain;
 
 namespace VirtualLibrary.Application.Features.Auth.Commands
 {
@@ -25,12 +26,13 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
 
             public async Task<IActionResult> Handle(SignUpCommand request, CancellationToken cancellationToken)
             {
-                var user = new IdentityUser { UserName = request.UserName, Email = request.Email };
+                var user = new User { UserName = request.UserName, Email = request.Email };
+
                 var identityResult = await _virtualLibraryUnitOfWork.Users.CreateAsync(user, request.Password);
 
                 if (!identityResult.Succeeded) return new BadRequestObjectResult(identityResult.Errors);
 
-                var result = _mapper.Map<IdentityUser, SignUpDto>(user);
+                var result = _mapper.Map<SignUpDto>(user);
 
                 var token = await _authService.GenerateJwtToken(user);
 
