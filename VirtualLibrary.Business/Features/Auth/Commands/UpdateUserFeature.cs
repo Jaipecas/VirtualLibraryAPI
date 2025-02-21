@@ -37,7 +37,7 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
                 {
                     var newUserName = await _virtualLibraryUnitOfWork.Users.FindByNameAsync(request.NewUserName);
 
-                    if (newUserName == null) return new BadRequestObjectResult(new { errorMessage = "UserName ya existe" });
+                    if (newUserName != null) return new BadRequestObjectResult(new { errorMessage = "UserName ya existe" });
 
                     user.UserName = request.NewUserName;
                 }
@@ -54,7 +54,6 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
                 if (!updateResult.Succeeded) return new BadRequestObjectResult(new { errorMessage = "Usuario no actualizado" });
 
                 return new OkObjectResult(updateResult);
-
             }
         }
     }
