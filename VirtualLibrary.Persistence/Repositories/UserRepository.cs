@@ -28,5 +28,15 @@ namespace VirtualLibrary.Persistence.Repositories
         {
             return await _userManager.FindByEmailAsync(email);
         }
+
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+
+        public async Task<IdentityResult> UpdateAsync(User user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
     }
 }
