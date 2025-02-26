@@ -12,8 +12,8 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
             public required string CurrentEmail { get; set; }
             public string? NewUserName { get; set; }
             public string? NewEmail { get; set; }
-            public string? Password { get; set; }
-            public string? ConfirmPassword { get; set; }
+            public string? NewPassword { get; set; }
+            public string? Logo { get; set; }
         }
     }
 }

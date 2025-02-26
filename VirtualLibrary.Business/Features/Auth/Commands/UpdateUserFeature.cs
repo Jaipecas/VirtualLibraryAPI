@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
+using VirtualLibrary.Domain;
 
 namespace VirtualLibrary.Application.Features.Auth.Commands
 {
@@ -11,11 +13,13 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
         {
             private readonly IVirtualLibraryUnitOfWork _virtualLibraryUnitOfWork;
             private readonly IMapper _mapper;
+            private readonly IPasswordHasher<User> _passwordHasher;
 
-            public UpdateUserHandler(IVirtualLibraryUnitOfWork virtualLibraryUnitOfWork, IMapper mapper)
+            public UpdateUserHandler(IVirtualLibraryUnitOfWork virtualLibraryUnitOfWork, IMapper mapper, IPasswordHasher<User> passwordHasher)
             {
                 _virtualLibraryUnitOfWork = virtualLibraryUnitOfWork;
                 _mapper = mapper;
+                _passwordHasher = passwordHasher;
             }
 
             public async Task<IActionResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -28,7 +32,7 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
                 {
                     var newUser = await _virtualLibraryUnitOfWork.Users.FindByEmailAsync(request.NewEmail);
 
-                    if (newUser != null) return new BadRequestObjectResult(new { errorMessage = "Email ya existe" });
+                    if (newUser != null && request.NewEmail != user.Email) return new BadRequestObjectResult(new { errorMessage = "Email ya existe" });
 
                     user.Email = request.NewEmail;
                 }
@@ -37,23 +41,22 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
                 {
                     var newUserName = await _virtualLibraryUnitOfWork.Users.FindByNameAsync(request.NewUserName);
 
-                    if (newUserName != null) return new BadRequestObjectResult(new { errorMessage = "UserName ya existe" });
+                    if (newUserName != null && request.NewUserName != user.UserName) return new BadRequestObjectResult(new { errorMessage = "UserName ya existe" });
 
                     user.UserName = request.NewUserName;
                 }
 
-                if (!string.IsNullOrEmpty(request.Password) && !string.IsNullOrEmpty(request.ConfirmPassword))
-                {
-                    var changePassword = await _virtualLibraryUnitOfWork.Users.ChangePasswordAsync(user, request.Password, request.ConfirmPassword);
+                if (!string.IsNullOrEmpty(request.NewPassword)) user.PasswordHash = _passwordHasher.HashPassword(user, request.NewPassword);
 
-                    if (!changePassword.Succeeded) return new BadRequestObjectResult(new { errorMessage = "Contraseña no actualizada" });
-                }
+                if (!string.IsNullOrEmpty(request.Logo)) user.Logo = request.Logo;
 
                 var updateResult = await _virtualLibraryUnitOfWork.Users.UpdateAsync(user);
 
                 if (!updateResult.Succeeded) return new BadRequestObjectResult(new { errorMessage = "Usuario no actualizado" });
 
-                return new OkObjectResult(updateResult);
+                var result = _mapper.Map<UpdateUserDto>(user);
+
+                return new OkObjectResult(result);
             }
         }
     }
