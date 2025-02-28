@@ -1,7 +1,8 @@
 ﻿
+
 namespace VirtualLibrary.Domain.StudyRoom
 {
-    public class StudyRoom
+    public class StudyRoom : GenericEntity
     {
         public required string Name { get; set; }
         public required string Description { get; set; }
