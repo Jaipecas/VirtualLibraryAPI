@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.Xml;
 using VirtualLibrary.Domain;
 using VirtualLibrary.Domain.StudyRoom;
 
@@ -13,7 +14,7 @@ namespace VirtualLibrary.Persistence.Contexts
         {
             base.OnModelCreating(builder);
             builder.Entity<StudyRoom>().HasMany(x => x.StudyRoomUsers).WithOne(x => x.StudyRoom).OnDelete(DeleteBehavior.ClientCascade);
-            builder.Entity<StudyRoom>().HasOne(x => x.Pomodoro).WithOne().OnDelete(DeleteBehavior.ClientCascade);
+            builder.Entity<StudyRoom>().HasOne(x => x.Pomodoro).WithOne().HasForeignKey<StudyRoom>(x => x.PomodoroId).OnDelete(DeleteBehavior.ClientCascade);
         }
 
         public DbSet<StudyRoom> StudyRooms { get; set; }
