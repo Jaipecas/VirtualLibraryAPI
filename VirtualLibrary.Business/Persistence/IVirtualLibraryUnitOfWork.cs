@@ -6,6 +6,7 @@ namespace VirtualLibrary.Application.Persistence
     public interface IVirtualLibraryUnitOfWork
     {
         IUserRepository Users { get; }
+        IStudyRoomRepository StudyRooms { get; }
         Task<int> SaveChanges();
     }
 }

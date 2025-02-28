@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VirtualLibrary.Domain;
+using VirtualLibrary.Domain.StudyRoom;
 
 namespace VirtualLibrary.Persistence.Contexts
 {
@@ -10,7 +11,12 @@ namespace VirtualLibrary.Persistence.Contexts
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);         
+            base.OnModelCreating(builder);
+            builder.Entity<StudyRoom>().HasMany(x => x.StudyRoomUsers).WithOne(x => x.StudyRoom).OnDelete(DeleteBehavior.ClientCascade);
+            builder.Entity<StudyRoom>().HasOne(x => x.Pomodoro).WithOne().OnDelete(DeleteBehavior.ClientCascade);
         }
+
+        public DbSet<StudyRoom> StudyRooms { get; set; }
+        public DbSet<Pomodoro> Pomodoros { get; set; }
     }
 }

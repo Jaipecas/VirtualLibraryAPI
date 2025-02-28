@@ -24,6 +24,7 @@ builder.Services.AddDbContext<VirtualLibraryDbContext>(options =>
 builder.Services.AddScoped<IVirtualLibraryUnitOfWork, VirtualLibraryUnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IStudyRoomRepository, StudyRoomRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<VirtualLibraryDbContext>()

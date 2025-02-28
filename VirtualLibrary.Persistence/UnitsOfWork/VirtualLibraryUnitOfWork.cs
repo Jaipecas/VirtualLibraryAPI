@@ -9,10 +9,13 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
         private readonly VirtualLibraryDbContext _virtualLibraryDbContext;
         public IUserRepository Users { get;}
 
-        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users)
+        public IStudyRoomRepository StudyRooms { get;}
+
+        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms)
         {
             _virtualLibraryDbContext = VirtualLibraryDbContext;
             Users = users;
+            StudyRooms = studyRooms;
         }
 
         public async Task<int> SaveChanges() => await _virtualLibraryDbContext.SaveChangesAsync();
