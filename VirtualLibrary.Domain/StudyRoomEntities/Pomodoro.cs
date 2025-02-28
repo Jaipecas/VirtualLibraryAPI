@@ -1,5 +1,5 @@
 ﻿
-namespace VirtualLibrary.Domain.StudyRoom
+namespace VirtualLibrary.Domain.StudyRoomEntities
 {
     public class Pomodoro : GenericEntity
     {

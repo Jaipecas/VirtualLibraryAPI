@@ -1,6 +1,6 @@
 ﻿
 
-namespace VirtualLibrary.Domain.StudyRoom
+namespace VirtualLibrary.Domain.StudyRoomEntities
 {
     public class StudyRoom : GenericEntity
     {
