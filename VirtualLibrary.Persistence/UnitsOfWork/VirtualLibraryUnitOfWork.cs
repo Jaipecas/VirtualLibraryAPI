@@ -7,13 +7,11 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
     public class VirtualLibraryUnitOfWork : IVirtualLibraryUnitOfWork
     {
         private readonly VirtualLibraryDbContext _virtualLibraryDbContext;
-        public IProducts Products {get;}
         public IUserRepository Users { get;}
 
-        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IProducts products, IUserRepository users)
+        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users)
         {
             _virtualLibraryDbContext = VirtualLibraryDbContext;
-            Products = products;
             Users = users;
         }
 

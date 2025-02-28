@@ -12,7 +12,5 @@ namespace VirtualLibrary.Persistence.Contexts
         {
             base.OnModelCreating(builder);         
         }
-
-        public DbSet<Product> Products { get; set; }
     }
 }

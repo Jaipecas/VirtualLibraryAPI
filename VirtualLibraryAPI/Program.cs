@@ -22,7 +22,6 @@ builder.Services.AddDbContext<VirtualLibraryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IVirtualLibraryUnitOfWork, VirtualLibraryUnitOfWork>();
-builder.Services.AddScoped<IProducts, ProductRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -51,7 +50,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddProductHandle>());
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SignInHandler>());
 builder.Services.AddAutoMapper(typeof(SignInProfile).Assembly);
 
 builder.Services.AddControllers();
