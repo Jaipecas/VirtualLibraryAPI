@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using VirtualLibrary.Application.Features;
-using VirtualLibrary.Application.Features.Auth.Commands;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Application.Persistence.Repositories;
 using VirtualLibrary.Application.Persistence.Services;
+using VirtualLibrary.Domain;
 using VirtualLibrary.Persistence.Contexts;
 using VirtualLibrary.Persistence.Repositories;
 using VirtualLibrary.Persistence.Service;
@@ -26,7 +26,7 @@ builder.Services.AddScoped<IProducts, ProductRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<VirtualLibraryDbContext>()
                 .AddDefaultTokenProviders();
 

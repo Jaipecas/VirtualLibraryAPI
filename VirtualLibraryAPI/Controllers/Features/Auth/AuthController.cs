@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.Auth.Commands.LogoutFeature;
 using static VirtualLibrary.Application.Features.Auth.Commands.SignInFeature;
 using static VirtualLibrary.Application.Features.Auth.Commands.SignUpFeature;
+using static VirtualLibrary.Application.Features.Auth.Commands.UpdateUserFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.Auth
 {
@@ -20,25 +21,25 @@ namespace VirtualLibraryAPI.Controllers.Features.Auth
         [HttpPost("signUp")]
         public async Task<IActionResult> SignUp(SignUpCommand command)
         {
-            var result = await _mediator.Send(command);
-
-            return result;
+            return await _mediator.Send(command);
         }
 
         [HttpPost("signIn")]
         public async Task<IActionResult> SignIn(SignInCommand command)
         {
-            var result = await _mediator.Send(command);
-
-            return result;
+            return await _mediator.Send(command);
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout(LogoutCommand command)
         {
-            var result = await _mediator.Send(command);
+            return await _mediator.Send(command);
+        }
 
-            return result;
+        [HttpPost("updateUser")]
+        public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
+        {
+            return await _mediator.Send(command);            
         }
     }
 }

@@ -11,10 +11,12 @@ namespace VirtualLibrary.Persistence.Factories
         {
             var optionsBuilder = new DbContextOptionsBuilder<VirtualLibraryDbContext>();
 
+            var basePath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "VirtualLibraryAPI"));
+
             var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json")
-                .Build();
+            .Build();
 
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
 

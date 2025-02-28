@@ -1,12 +1,10 @@
-﻿
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using VirtualLibrary.Domain;
 
 namespace VirtualLibrary.Application.Persistence.Services
 {
     public interface IAuthService
     {
-        Task<string?> GenerateJwtToken(IdentityUser user);
+        Task<string?> GenerateJwtToken(User user);
         void SetAuthCookie(string token);
         void RemoveAuthCookie();
     }
