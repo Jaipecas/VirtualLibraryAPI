@@ -1,9 +1,9 @@
 ﻿
 namespace VirtualLibrary.Domain.StudyRoomEntities
 {
-    public class StudyRoomUser(StudyRoom studyRoom, User user) : GenericEntity
+    public class StudyRoomUser : GenericEntity
     {
-        public StudyRoom StudyRoom { get; set; } = studyRoom;
-        public User User { get; set; } = user;
+        public required StudyRoom StudyRoom { get; set; }
+        public required User User { get; set; } 
     }
 }

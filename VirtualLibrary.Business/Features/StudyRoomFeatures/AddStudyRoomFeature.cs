@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Domain.StudyRoomEntities;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.AddStudyRoomFeature;
@@ -11,11 +13,13 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        
-        public AddStudyRoomFeature(IVirtualLibraryUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public AddStudyRoomFeature(IVirtualLibraryUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Handle(AddStudyRoomCommand request, CancellationToken cancellationToken)
@@ -26,7 +30,9 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures
 
             var studyRoom = _mapper.Map<StudyRoom>(request);
 
-            studyRoom.StudyRoomUsers = users.Select(user => new StudyRoomUser(studyRoom!, user)).ToList();
+            var httpContextUser = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            studyRoom.StudyRoomUsers = users.Select(user => new StudyRoomUser { StudyRoom = studyRoom, User = user, CreatedBy = httpContextUser!, CreatedDate = DateTime.Now}).ToList();
 
             await _unitOfWork.StudyRooms.Add(studyRoom);
 
