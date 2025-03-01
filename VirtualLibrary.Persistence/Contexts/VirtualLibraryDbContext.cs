@@ -18,5 +18,6 @@ namespace VirtualLibrary.Persistence.Contexts
 
         public DbSet<StudyRoom> StudyRooms { get; set; }
         public DbSet<Pomodoro> Pomodoros { get; set; }
+        public DbSet<StudyRoomUser> StudyRoomUsers { get; set; }
     }
 }
