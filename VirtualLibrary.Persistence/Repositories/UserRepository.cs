@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using VirtualLibrary.Application.Persistence.Repositories;
 using VirtualLibrary.Domain;
 
@@ -42,6 +43,11 @@ namespace VirtualLibrary.Persistence.Repositories
         public async Task<User?> FindByNameAsync(string userName)
         {
             return await _userManager.FindByNameAsync(userName);
+        }
+
+        public async Task<List<User>?> GetUsersAsync(List<string> userIds)
+        {
+            return await _userManager.Users.Where(u => userIds.Contains(u.Id)).ToListAsync();
         }
     }
 }

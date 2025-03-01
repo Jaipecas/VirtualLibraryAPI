@@ -1,5 +1,5 @@
 ﻿
-using VirtualLibrary.Domain.StudyRoom;
+using VirtualLibrary.Domain.StudyRoomEntities;
 
 namespace VirtualLibrary.Application.Persistence.Repositories
 {

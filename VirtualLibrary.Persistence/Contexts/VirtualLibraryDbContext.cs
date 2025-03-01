@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.Xml;
 using VirtualLibrary.Domain;
-using VirtualLibrary.Domain.StudyRoom;
+using VirtualLibrary.Domain.StudyRoomEntities;
 
 namespace VirtualLibrary.Persistence.Contexts
 {

@@ -12,5 +12,6 @@ namespace VirtualLibrary.Application.Persistence.Repositories
         Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
         Task<IdentityResult> UpdateAsync(User user);
         Task<User?> FindByNameAsync(string userName);
+        Task<List<User>?> GetUsersAsync(List<string> userIds);
     }
 }
