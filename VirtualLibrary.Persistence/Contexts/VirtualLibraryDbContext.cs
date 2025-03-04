@@ -14,6 +14,7 @@ namespace VirtualLibrary.Persistence.Contexts
             base.OnModelCreating(builder);
             builder.Entity<StudyRoom>().HasMany(x => x.StudyRoomUsers).WithOne(x => x.StudyRoom).OnDelete(DeleteBehavior.ClientCascade);
             builder.Entity<StudyRoom>().HasOne(x => x.Pomodoro).WithOne().HasForeignKey<StudyRoom>(x => x.PomodoroId).OnDelete(DeleteBehavior.ClientCascade);
+            builder.Entity<StudyRoom>().HasOne(x => x.Owner).WithMany().HasForeignKey(x => x.OwnerId);
         }
 
         public DbSet<StudyRoom> StudyRooms { get; set; }
