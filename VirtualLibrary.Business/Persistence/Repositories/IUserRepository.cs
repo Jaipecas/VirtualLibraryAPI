@@ -13,5 +13,6 @@ namespace VirtualLibrary.Application.Persistence.Repositories
         Task<IdentityResult> UpdateAsync(User user);
         Task<User?> FindByNameAsync(string userName);
         Task<List<User>?> GetUsersAsync(List<string> userIds);
+        Task<User?> FindByIdAsync(string id);
     }
 }

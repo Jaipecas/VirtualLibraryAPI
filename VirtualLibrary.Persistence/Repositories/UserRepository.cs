@@ -49,5 +49,10 @@ namespace VirtualLibrary.Persistence.Repositories
         {
             return await _userManager.Users.Where(u => userIds.Contains(u.Id)).ToListAsync();
         }
+
+        public async Task<User?> FindByIdAsync(string id)
+        {
+            return await _userManager.FindByIdAsync(id);
+        }
     }
 }
