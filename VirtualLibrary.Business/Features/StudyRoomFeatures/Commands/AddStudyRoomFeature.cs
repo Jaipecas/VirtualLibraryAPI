@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Domain.StudyRoomEntities;
-using static VirtualLibrary.Application.Features.StudyRoomFeatures.AddStudyRoomFeature;
+using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 
-namespace VirtualLibrary.Application.Features.StudyRoomFeatures
+namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 {
     public partial class AddStudyRoomFeature : IRequestHandler<AddStudyRoomCommand, IActionResult>
     {

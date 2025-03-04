@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static VirtualLibrary.Application.Features.StudyRoomFeatures.AddStudyRoomFeature;
+using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
 {
