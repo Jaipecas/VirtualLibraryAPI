@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtualLibrary.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using VirtualLibrary.Persistence.Contexts;
 namespace VirtualLibrary.Persistence.Migrations
 {
     [DbContext(typeof(VirtualLibraryDbContext))]
-    partial class VirtualLibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250304182413_UpdateCascadeDelete3")]
+    partial class UpdateCascadeDelete3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,9 +182,6 @@ namespace VirtualLibrary.Persistence.Migrations
                     b.Property<DateTime>("PomodoroTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StudyRoomId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -189,9 +189,6 @@ namespace VirtualLibrary.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StudyRoomId")
-                        .IsUnique();
 
                     b.ToTable("Pomodoros");
                 });
@@ -222,6 +219,9 @@ namespace VirtualLibrary.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("PomodoroId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -231,6 +231,9 @@ namespace VirtualLibrary.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
+
+                    b.HasIndex("PomodoroId")
+                        .IsUnique();
 
                     b.ToTable("StudyRooms");
                 });
@@ -389,17 +392,6 @@ namespace VirtualLibrary.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.Pomodoro", b =>
-                {
-                    b.HasOne("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", "StudyRoom")
-                        .WithOne("Pomodoro")
-                        .HasForeignKey("VirtualLibrary.Domain.StudyRoomEntities.Pomodoro", "StudyRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StudyRoom");
-                });
-
             modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", b =>
                 {
                     b.HasOne("VirtualLibrary.Domain.User", "Owner")
@@ -408,7 +400,15 @@ namespace VirtualLibrary.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("VirtualLibrary.Domain.StudyRoomEntities.Pomodoro", "Pomodoro")
+                        .WithOne("StudyRoom")
+                        .HasForeignKey("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", "PomodoroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Owner");
+
+                    b.Navigation("Pomodoro");
                 });
 
             modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.StudyRoomUser", b =>
@@ -428,11 +428,14 @@ namespace VirtualLibrary.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.Pomodoro", b =>
+                {
+                    b.Navigation("StudyRoom")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", b =>
                 {
-                    b.Navigation("Pomodoro")
-                        .IsRequired();
-
                     b.Navigation("StudyRoomUsers");
                 });
 #pragma warning restore 612, 618

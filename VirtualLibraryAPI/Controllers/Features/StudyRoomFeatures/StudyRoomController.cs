@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
+using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.DeleteStudyRoomFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
 {
@@ -17,6 +18,12 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
 
         [HttpPost("AddStudyRoom")]
         public async Task<IActionResult> AddStudyRoom(AddStudyRoomCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        [HttpPost("DeleteStudyRoom")]
+        public async Task<IActionResult> DeleteStudyRoom(DeleteStudyRoomCommand command)
         {
             return await _mediator.Send(command);
         }
