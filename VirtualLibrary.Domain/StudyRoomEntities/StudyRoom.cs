@@ -32,5 +32,6 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
             set => _owner = value;
         }
         public StudyRoom(ILazyLoader lazyLoader) => _lazyLoader = lazyLoader;
+        public StudyRoom() { }
     }
 }

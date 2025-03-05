@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.DeleteStudyRoomFeature;
+using static VirtualLibrary.Application.Features.StudyRoomFeatures.Queries.GetStudyRoomsByOwnerFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
 {
@@ -26,6 +27,12 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
         public async Task<IActionResult> DeleteStudyRoom(DeleteStudyRoomCommand command)
         {
             return await _mediator.Send(command);
+        }
+
+        [HttpGet("GetStudyRoomsByOwner")]
+        public async Task<IActionResult> GetStudyRoomsByOwner([FromQuery] GetStudyRoomsByOwnerQuery request)
+        {
+            return await _mediator.Send(request);
         }
     }
 }
