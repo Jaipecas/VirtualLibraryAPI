@@ -8,6 +8,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
     {
         public class UpdateStudyRoomCommand : IRequest<IActionResult>
         {
+            public required int Id { get; set; }
             public required string Name { get; set; }
             public required string Description { get; set; }
             public required List<string> UsersIds { get; set; }
