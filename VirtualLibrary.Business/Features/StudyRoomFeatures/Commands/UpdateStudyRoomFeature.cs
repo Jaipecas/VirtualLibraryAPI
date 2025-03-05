@@ -1,31 +1,32 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using VirtualLibrary.Application.Persistence;
+using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.UpdateStudyRoomFeature;
 
 namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 {
-    public partial class UpdateStudyRoomFeature
+    public partial class UpdateStudyRoomFeature : IRequestHandler<UpdateStudyRoomCommand, IActionResult>
     {
-        public class UpdateStudyRoomValidation : AbstractValidator<UpdateStudyRoomCommand>
+        private readonly IVirtualLibraryUnitOfWork _unitOfWork;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public UpdateStudyRoomFeature(IVirtualLibraryUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
-            public UpdateStudyRoomValidation()
-            {
-                RuleFor(r => r.Id).NotEmpty();
-                RuleFor(r => r.Name).NotEmpty();
-                RuleFor(r => r.Description).NotEmpty();
-                RuleFor(r => r.UsersIds).NotEmpty();
-                RuleFor(r => r.Pomodoro).NotEmpty().SetValidator(new UpdateStudyRoomPomodoroValidation());
-            }
-
-            public class UpdateStudyRoomPomodoroValidation : AbstractValidator<PomodoroCommand>
-            {
-                public UpdateStudyRoomPomodoroValidation()
-                {
-                    RuleFor(r => r.Name).NotEmpty();
-                    RuleFor(r => r.PomodoroTime).NotEmpty();
-                    RuleFor(r => r.BreakTime).NotEmpty();
-                }
-            }
+            _unitOfWork = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
         }
+        public async Task<IActionResult> Handle(UpdateStudyRoomCommand request, CancellationToken cancellationToken)
+        {
+            //TODO terminar handler
+            var studyRoom = await _unitOfWork.StudyRooms.GetById(request.Id);
 
+            if (studyRoom == null) return new NotFoundObjectResult(new { errorMessage = "No se ha encontrado la sala" });
+
+            return new OkObjectResult(true);
+
+
+        }
     }
-
 }
