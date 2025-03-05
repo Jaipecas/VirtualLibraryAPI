@@ -4,11 +4,9 @@ using VirtualLibrary.Domain;
 
 namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Queries
 {
-
-
     public partial class GetStudyRoomsByOwnerFeature
     {
-        public class GetStudyRoomsByOwnerDto
+        public class StudyRoomDto
         {
             public required string Name { get; set; }
             public required string Description { get; set; }

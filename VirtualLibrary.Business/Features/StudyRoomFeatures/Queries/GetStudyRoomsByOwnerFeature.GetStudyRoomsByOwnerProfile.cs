@@ -10,7 +10,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Queries
         {
             public GetStudyRoomsByOwnerProfile()
             {
-                CreateMap<StudyRoom, GetStudyRoomsByOwnerDto>()
+                CreateMap<StudyRoom, StudyRoomDto>()
                     .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.StudyRoomUsers.Select(s => s.User).ToList()));
 
                 CreateMap<Pomodoro, PomodoroDto>();

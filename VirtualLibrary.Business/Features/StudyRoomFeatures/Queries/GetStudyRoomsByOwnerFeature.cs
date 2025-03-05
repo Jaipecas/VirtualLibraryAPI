@@ -29,7 +29,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Queries
 
             if (rooms == null) return new NotFoundObjectResult(new { errorMessage = "El usuario no tiene salas" });
 
-            var result = _mapper.Map<List<GetStudyRoomsByOwnerDto>>(rooms);
+            var result = _mapper.Map<List<StudyRoomDto>>(rooms);
 
             return new OkObjectResult(result);
         }
