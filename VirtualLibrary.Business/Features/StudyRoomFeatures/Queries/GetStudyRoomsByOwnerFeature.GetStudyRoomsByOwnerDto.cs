@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using VirtualLibrary.Domain.StudyRoomEntities;
-using VirtualLibrary.Domain;
-
+﻿
 namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Queries
 {
     public partial class GetStudyRoomsByOwnerFeature
