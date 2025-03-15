@@ -6,7 +6,7 @@ using static VirtualLibrary.Application.Features.StudyRoomFeatures.Queries.GetSt
 
 namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
 {
-    [Route("api/[controller]")]
+    [Route("api/studyroom")]
     [ApiController]
     public class StudyRoomController : ControllerBase
     {
@@ -17,14 +17,14 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
             _mediator = mediator;
         }
 
-        [HttpPost("AddStudyRoom")]
+        [HttpPost()]
         public async Task<IActionResult> AddStudyRoom(AddStudyRoomCommand command)
         {
             return await _mediator.Send(command);
         }
 
-        [HttpPost("DeleteStudyRoom")]
-        public async Task<IActionResult> DeleteStudyRoom(DeleteStudyRoomCommand command)
+        [HttpDelete()]
+        public async Task<IActionResult> DeleteStudyRoom([FromQuery] DeleteStudyRoomCommand command)
         {
             return await _mediator.Send(command);
         }
