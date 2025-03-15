@@ -11,7 +11,7 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
         public required string Description { get; set; }
 
         private List<StudyRoomUser>? _studyRoomUsers;
-        public List<StudyRoomUser> StudyRoomUsers
+        public List<StudyRoomUser>? StudyRoomUsers
         {
             get => _lazyLoader.Load(this, ref _studyRoomUsers);
             set => _studyRoomUsers = value;
