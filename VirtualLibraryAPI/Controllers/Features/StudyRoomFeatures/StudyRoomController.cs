@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.DeleteStudyRoomFeature;
@@ -29,6 +30,7 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
             return await _mediator.Send(command);
         }
 
+        [Authorize]
         [HttpGet("getStudyRoomsByOwner")]
         public async Task<IActionResult> GetStudyRoomsByOwner([FromQuery] GetStudyRoomsByOwnerQuery request)
         {

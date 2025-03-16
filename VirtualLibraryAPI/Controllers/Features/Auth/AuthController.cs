@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.Auth.Commands.LogoutFeature;
 using static VirtualLibrary.Application.Features.Auth.Commands.SignInFeature;
@@ -36,6 +37,7 @@ namespace VirtualLibraryAPI.Controllers.Features.Auth
             return await _mediator.Send(command);
         }
 
+        [Authorize]
         [HttpPost("updateUser")]
         public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
         {
