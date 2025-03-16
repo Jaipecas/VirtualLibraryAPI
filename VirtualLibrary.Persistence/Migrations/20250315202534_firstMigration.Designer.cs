@@ -12,8 +12,8 @@ using VirtualLibrary.Persistence.Contexts;
 namespace VirtualLibrary.Persistence.Migrations
 {
     [DbContext(typeof(VirtualLibraryDbContext))]
-    [Migration("20250228190737_studyRoom")]
-    partial class studyRoom
+    [Migration("20250315202534_firstMigration")]
+    partial class firstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,7 +158,7 @@ namespace VirtualLibrary.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoom.Pomodoro", b =>
+            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.Pomodoro", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -166,22 +166,24 @@ namespace VirtualLibrary.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("BreakTime")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("BreakTime")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("PomodoroTime")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("PomodoroTime")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudyRoomId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -191,10 +193,13 @@ namespace VirtualLibrary.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StudyRoomId")
+                        .IsUnique();
+
                     b.ToTable("Pomodoros");
                 });
 
-            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoom.StudyRoom", b =>
+            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -203,10 +208,9 @@ namespace VirtualLibrary.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -217,8 +221,9 @@ namespace VirtualLibrary.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PomodoroId")
-                        .HasColumnType("int");
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -228,13 +233,12 @@ namespace VirtualLibrary.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PomodoroId")
-                        .IsUnique();
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("StudyRooms");
                 });
 
-            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoom.StudyRoomUser", b =>
+            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.StudyRoomUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -243,10 +247,9 @@ namespace VirtualLibrary.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("StudyRoomId")
@@ -259,7 +262,6 @@ namespace VirtualLibrary.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -268,7 +270,7 @@ namespace VirtualLibrary.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("StudyRoomUser");
+                    b.ToTable("StudyRoomUsers");
                 });
 
             modelBuilder.Entity("VirtualLibrary.Domain.User", b =>
@@ -390,39 +392,56 @@ namespace VirtualLibrary.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoom.StudyRoom", b =>
+            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.Pomodoro", b =>
                 {
-                    b.HasOne("VirtualLibrary.Domain.StudyRoom.Pomodoro", "Pomodoro")
-                        .WithOne()
-                        .HasForeignKey("VirtualLibrary.Domain.StudyRoom.StudyRoom", "PomodoroId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                    b.HasOne("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", "StudyRoom")
+                        .WithOne("Pomodoro")
+                        .HasForeignKey("VirtualLibrary.Domain.StudyRoomEntities.Pomodoro", "StudyRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Pomodoro");
+                    b.Navigation("StudyRoom");
                 });
 
-            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoom.StudyRoomUser", b =>
+            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", b =>
                 {
-                    b.HasOne("VirtualLibrary.Domain.StudyRoom.StudyRoom", "StudyRoom")
+                    b.HasOne("VirtualLibrary.Domain.User", "Owner")
+                        .WithMany("StudyRooms")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.StudyRoomUser", b =>
+                {
+                    b.HasOne("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", "StudyRoom")
                         .WithMany("StudyRoomUsers")
                         .HasForeignKey("StudyRoomId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("VirtualLibrary.Domain.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("StudyRoom");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoom.StudyRoom", b =>
+            modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", b =>
                 {
+                    b.Navigation("Pomodoro")
+                        .IsRequired();
+
                     b.Navigation("StudyRoomUsers");
+                });
+
+            modelBuilder.Entity("VirtualLibrary.Domain.User", b =>
+                {
+                    b.Navigation("StudyRooms");
                 });
 #pragma warning restore 612, 618
         }

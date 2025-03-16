@@ -29,7 +29,7 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
             return await _mediator.Send(command);
         }
 
-        [HttpGet("GetStudyRoomsByOwner")]
+        [HttpGet("getStudyRoomsByOwner")]
         public async Task<IActionResult> GetStudyRoomsByOwner([FromQuery] GetStudyRoomsByOwnerQuery request)
         {
             return await _mediator.Send(request);

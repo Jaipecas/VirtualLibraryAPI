@@ -163,8 +163,8 @@ namespace VirtualLibrary.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("BreakTime")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("BreakTime")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -176,8 +176,8 @@ namespace VirtualLibrary.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("PomodoroTime")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("PomodoroTime")
+                        .HasColumnType("int");
 
                     b.Property<int>("StudyRoomId")
                         .HasColumnType("int");
@@ -403,7 +403,7 @@ namespace VirtualLibrary.Persistence.Migrations
             modelBuilder.Entity("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", b =>
                 {
                     b.HasOne("VirtualLibrary.Domain.User", "Owner")
-                        .WithMany()
+                        .WithMany("StudyRooms")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -434,6 +434,11 @@ namespace VirtualLibrary.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("StudyRoomUsers");
+                });
+
+            modelBuilder.Entity("VirtualLibrary.Domain.User", b =>
+                {
+                    b.Navigation("StudyRooms");
                 });
 #pragma warning restore 612, 618
         }

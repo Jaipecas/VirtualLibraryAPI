@@ -10,8 +10,11 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
         {
             public AddStudyRoomProfile()
             {
-                CreateMap<AddStudyRoomCommand, StudyRoom>().ForMember(x => x.Pomodoro, y => y.MapFrom(x => x.Pomodoro));
+                CreateMap<AddStudyRoomCommand, StudyRoom>()
+                    .ForMember(x => x.Pomodoro, y => y.MapFrom(x => x.Pomodoro));
+
                 CreateMap<PomodoroCommand, Pomodoro>();
+
             }
         }
     }
