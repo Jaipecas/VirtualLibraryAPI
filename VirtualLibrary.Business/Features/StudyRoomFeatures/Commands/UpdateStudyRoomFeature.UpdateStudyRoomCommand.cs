@@ -12,11 +12,10 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
             public required string Name { get; set; }
             public required string Description { get; set; }
             public required List<string> UsersIds { get; set; }
-            public required PomodoroCommand Pomodoro { get; set; }
-            public required string OwnerId { get; set; }
+            public required PomodoroUpdateCommand Pomodoro { get; set; }
         }
 
-        public class PomodoroCommand
+        public class PomodoroUpdateCommand
         {
             public required string Name { get; set; }
             public required DateTime PomodoroTime { get; set; }

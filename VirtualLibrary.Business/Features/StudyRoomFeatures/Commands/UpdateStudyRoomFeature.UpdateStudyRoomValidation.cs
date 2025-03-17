@@ -15,7 +15,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
                 RuleFor(r => r.Pomodoro).NotEmpty().SetValidator(new UpdateStudyRoomPomodoroValidation());
             }
 
-            public class UpdateStudyRoomPomodoroValidation : AbstractValidator<PomodoroCommand>
+            public class UpdateStudyRoomPomodoroValidation : AbstractValidator<PomodoroUpdateCommand>
             {
                 public UpdateStudyRoomPomodoroValidation()
                 {
