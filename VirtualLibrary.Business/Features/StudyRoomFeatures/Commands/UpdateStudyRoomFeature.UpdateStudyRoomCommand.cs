@@ -18,8 +18,8 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
         public class PomodoroUpdateCommand
         {
             public required string Name { get; set; }
-            public required DateTime PomodoroTime { get; set; }
-            public required DateTime BreakTime { get; set; }
+            public required int PomodoroTime { get; set; }
+            public required int BreakTime { get; set; }
         }
     }
 

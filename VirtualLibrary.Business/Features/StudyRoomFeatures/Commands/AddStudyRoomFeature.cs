@@ -26,7 +26,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
         {
             var users = await _unitOfWork.Users.GetUsersAsync(request.UsersIds);
 
-            if (users == null) return new BadRequestObjectResult(new { errorMessage =  "Not found users"});
+            if (users == null || users.Count == 0) return new BadRequestObjectResult(new { errorMessage =  "Not found users"});
 
             var owner = await _unitOfWork.Users.FindByIdAsync(request.OwnerId);
 
@@ -44,6 +44,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             await _unitOfWork.SaveChanges();
 
+            //TODO devolver el dto con el id
             return new OkObjectResult(true);
         }
     }
