@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Security.Claims;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Application.Persistence.Repositories;
@@ -13,16 +12,18 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
     {
         private readonly VirtualLibraryDbContext _virtualLibraryDbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         public IUserRepository Users { get; }
-
         public IStudyRoomRepository StudyRooms { get; }
+        public IStudyRoomUserRepository StudyRoomUser {  get; }
 
-        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms, IHttpContextAccessor httpContextAccessor)
+        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms, IHttpContextAccessor httpContextAccessor, IStudyRoomUserRepository studyRoomUser)
         {
             _virtualLibraryDbContext = VirtualLibraryDbContext;
             _httpContextAccessor = httpContextAccessor;
             Users = users;
             StudyRooms = studyRooms;
+            StudyRoomUser = studyRoomUser;
         }
 
         public async Task<int> SaveChanges()

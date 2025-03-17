@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using VirtualLibrary.Application.Features;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Application.Persistence.Repositories;
 using VirtualLibrary.Application.Persistence.Services;
@@ -25,6 +24,7 @@ builder.Services.AddScoped<IVirtualLibraryUnitOfWork, VirtualLibraryUnitOfWork>(
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IStudyRoomRepository, StudyRoomRepository>();
+builder.Services.AddScoped<IStudyRoomUserRepository, StudyRoomUserRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<VirtualLibraryDbContext>()
