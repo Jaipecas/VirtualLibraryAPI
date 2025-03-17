@@ -29,6 +29,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             if (users == null || users.Count == 0) return new NotFoundObjectResult(new { errorMessage = "No se han encontrado los usuarios" });
 
+            _unitOfWork.StudyRoomUser.RemoveRoomUsers(studyRoom.StudyRoomUsers);
 
             studyRoom.StudyRoomUsers = users
                                      .Select(user => new StudyRoomUser { User = user, StudyRoom = studyRoom })

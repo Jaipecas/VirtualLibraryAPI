@@ -20,5 +20,11 @@ namespace VirtualLibrary.Persistence.Repositories
             var result = await _virtualLibraryContext.StudyRoomUsers.Where(studyRoomUser => studyRoomUser.StudyRoom.Id == roomId).ToListAsync();
             return result;
         }
+
+        public bool RemoveRoomUsers(List<StudyRoomUser> roomsUser)
+        {
+            _virtualLibraryContext.StudyRoomUsers.RemoveRange(roomsUser);
+            return true;
+        }
     }
 }
