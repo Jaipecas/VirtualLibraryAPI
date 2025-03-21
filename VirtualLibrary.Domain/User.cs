@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using VirtualLibrary.Domain.StudyRoomEntities;
+using VirtualLibrary.Domain.UserEntities;
 
 namespace VirtualLibrary.Domain
 {
@@ -15,6 +16,13 @@ namespace VirtualLibrary.Domain
         {
             get => _lazyLoader.Load(this, ref _studyRooms);
             set => _studyRooms = value;
+        }
+
+        private List<UserFriend>? _userFriends;
+        public List<UserFriend> UserFriends
+        {
+            get => _lazyLoader.Load(this, ref _userFriends);
+            set => _userFriends = value;
         }
 
         public User(ILazyLoader lazyLoader) => _lazyLoader = lazyLoader;
