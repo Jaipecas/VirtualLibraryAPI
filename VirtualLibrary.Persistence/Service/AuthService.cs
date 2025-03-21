@@ -40,7 +40,7 @@ namespace VirtualLibrary.Persistence.Service
             var token = new JwtSecurityToken(
                              issuer: _configuration["JWT:ValidIssuer"],
                              audience: _configuration["JWT:ValidAudience"],
-                             expires: DateTime.UtcNow.AddHours(Double.Parse(_configuration["JWT:ExpirationInHours"]!)),
+                             expires: DateTime.Now.AddHours(Double.Parse(_configuration["JWT:ExpirationInHours"]!)),
                              claims: authClaims,
                              signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                              );
@@ -54,7 +54,7 @@ namespace VirtualLibrary.Persistence.Service
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddHours(Double.Parse(_configuration["JWT:ExpirationInHours"]!))
             };
 
@@ -68,7 +68,7 @@ namespace VirtualLibrary.Persistence.Service
                 Expires = DateTime.UtcNow.AddDays(-1),
                 HttpOnly = true,
                 Secure = true, 
-                SameSite = SameSiteMode.Strict
+                SameSite = SameSiteMode.None
             };
 
             _httpContextAccessor.HttpContext!.Response.Cookies.Append("jwt", "", cookieOptions);

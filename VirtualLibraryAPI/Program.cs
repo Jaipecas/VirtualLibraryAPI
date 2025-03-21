@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using VirtualLibrary.Application.Features;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Application.Persistence.Repositories;
 using VirtualLibrary.Application.Persistence.Services;
@@ -22,9 +21,10 @@ builder.Services.AddDbContext<VirtualLibraryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IVirtualLibraryUnitOfWork, VirtualLibraryUnitOfWork>();
-builder.Services.AddScoped<IProducts, ProductRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IStudyRoomRepository, StudyRoomRepository>();
+builder.Services.AddScoped<IStudyRoomUserRepository, StudyRoomUserRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<VirtualLibraryDbContext>()
@@ -37,6 +37,19 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    //lee el token de las cookies
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var token = context.Request.Cookies["jwt"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                context.Token = token;
+            }
+            return Task.CompletedTask;
+        }
+    };
     options.RequireHttpsMetadata = false;//deberia ponerse en true en PRO
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
@@ -51,7 +64,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddProductHandle>());
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SignInHandler>());
 builder.Services.AddAutoMapper(typeof(SignInProfile).Assembly);
 
 builder.Services.AddControllers();
@@ -85,9 +98,9 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
 
-app.UseAuthorization();
-
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
