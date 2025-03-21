@@ -10,7 +10,10 @@ namespace VirtualLibrary.Application.Features.UserFeatures.Queries
         {
             public GGetUserByNameProfile()
             {
-                CreateMap<User, GetUserByNameDto>();
+                CreateMap<User, GetUserByNameDto>()
+                     .ForMember(dest => dest.Friends, opt => opt.MapFrom(src => src.UserFriends.Select(uf => uf.Friend)));
+
+                CreateMap<User, GetUserByNameFriendDto>();
             }
         }
     }
