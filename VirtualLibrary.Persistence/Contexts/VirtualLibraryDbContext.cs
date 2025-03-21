@@ -12,9 +12,12 @@ namespace VirtualLibrary.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
             builder.Entity<StudyRoom>().HasMany(x => x.StudyRoomUsers).WithOne(x => x.StudyRoom).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<StudyRoom>().HasOne(x => x.Pomodoro).WithOne(x => x.StudyRoom).HasForeignKey<Pomodoro>(x => x.StudyRoomId).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<StudyRoom>().HasOne(x => x.Owner).WithMany(x => x.StudyRooms).HasForeignKey(x => x.OwnerId);
+
+            builder.Entity<User>().HasMany(x => x.UserFriends).WithOne(x => x.User).OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<StudyRoom> StudyRooms { get; set; }
