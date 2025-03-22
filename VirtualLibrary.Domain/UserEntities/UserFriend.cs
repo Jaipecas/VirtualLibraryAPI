@@ -18,5 +18,7 @@ namespace VirtualLibrary.Domain.UserEntities
 
         private readonly ILazyLoader _lazyLoader;
         public UserFriend(ILazyLoader lazyLoader) => _lazyLoader = lazyLoader;
+
+        public UserFriend() { }
     }
 }
