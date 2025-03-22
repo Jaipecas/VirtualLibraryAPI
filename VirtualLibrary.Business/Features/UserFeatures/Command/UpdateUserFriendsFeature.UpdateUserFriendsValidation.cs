@@ -9,12 +9,8 @@ namespace VirtualLibrary.Application.Features.UserFeatures.Command
             public UpdateUserFriendsValidation()
             {
                 RuleFor(r => r.UserId).NotEmpty();
-                RuleFor(r => r.FriendId).NotEmpty();
+                RuleFor(r => r.FriendName).NotEmpty();
             }
         }
-
-
-
-
     }
 }

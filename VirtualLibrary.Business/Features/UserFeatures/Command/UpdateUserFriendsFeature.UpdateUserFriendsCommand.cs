@@ -8,11 +8,7 @@ namespace VirtualLibrary.Application.Features.UserFeatures.Command
         public class UpdateUserFriendsCommand : IRequest<IActionResult>
         {
             public required string UserId { get; set; }
-            public required string FriendId { get; set; }
+            public required string FriendName { get; set; }
         }
-
-
-
-
     }
 }

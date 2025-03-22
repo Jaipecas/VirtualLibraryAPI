@@ -25,7 +25,9 @@ namespace VirtualLibrary.Application.Features.UserFeatures.Command
 
             if (user == null) return new NotFoundObjectResult(new { errorMessage = "No se ha encontrado el usuario" });
 
-            var friend = await _unitOfWork.Users.FindByIdAsync(request.FriendId);
+            if (user.UserName == request.FriendName) return new BadRequestObjectResult(new { errorMessage = "No te puedes agregar a ti mismo como amigo" });
+            
+            var friend = await _unitOfWork.Users.FindByNameAsync(request.FriendName);
 
             if (friend == null) return new NotFoundObjectResult(new { errorMessage = "No se ha encontrado el amigo" });
 
