@@ -1,16 +1,14 @@
 ﻿
 using AutoMapper;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
-using VirtualLibrary.Domain.StudyRoomEntities;
 using VirtualLibrary.Domain.UserEntities;
 using static VirtualLibrary.Application.Features.UserFeatures.Command.UpdateUserFriendsFeature;
 
 namespace VirtualLibrary.Application.Features.UserFeatures.Command
 {
-    public class UpdateUserFriendsFeature : IRequestHandler<UpdateUserFriendsCommand, IActionResult>
+    public partial class UpdateUserFriendsFeature : IRequestHandler<UpdateUserFriendsCommand, IActionResult>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -41,24 +39,5 @@ namespace VirtualLibrary.Application.Features.UserFeatures.Command
 
             return new OkObjectResult(true);
         }
-
-        public class UpdateUserFriendsCommand : IRequest<IActionResult>
-        {
-            public required string UserId { get; set; }
-            public required string FriendId { get; set; }
-        }
-
-        public class UpdateUserFriendsValidation : AbstractValidator<UpdateUserFriendsCommand>
-        {
-            public UpdateUserFriendsValidation()
-            {
-                RuleFor(r => r.UserId).NotEmpty();
-                RuleFor(r => r.FriendId).NotEmpty();
-            }
-        }
-
-
-
-
     }
 }
