@@ -13,7 +13,5 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
                 CreateMap<PomodoroUpdateCommand, Pomodoro>();
             }
         }
-
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static VirtualLibrary.Application.Features.UserFeatures.Command.UpdateUserFriendsFeature;
 using static VirtualLibrary.Application.Features.UserFeatures.Queries.GetUserByNameFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.UserFeatures
@@ -19,6 +20,12 @@ namespace VirtualLibraryAPI.Controllers.Features.UserFeatures
 
         [HttpGet()]
         public async Task<IActionResult> GetUserByName([FromQuery] GetUserByNameQuery request)
+        {
+            return await _mediator.Send(request);
+        }
+
+        [HttpPost("friends")]
+        public async Task<IActionResult> UpdateUserFriends(UpdateUserFriendsCommand request)
         {
             return await _mediator.Send(request);
         }
