@@ -26,7 +26,7 @@ namespace VirtualLibrary.Application.Features.UserFeatures.Command
             if (user == null) return new NotFoundObjectResult(new { errorMessage = "No se ha encontrado el usuario" });
 
             if (user.UserName == request.FriendName) return new BadRequestObjectResult(new { errorMessage = "No te puedes agregar a ti mismo como amigo" });
-            
+
             var friend = await _unitOfWork.Users.FindByNameAsync(request.FriendName);
 
             if (friend == null) return new NotFoundObjectResult(new { errorMessage = "No se ha encontrado el amigo" });
@@ -39,7 +39,9 @@ namespace VirtualLibrary.Application.Features.UserFeatures.Command
 
             await _unitOfWork.SaveChanges();
 
-            return new OkObjectResult(true);
+            var result = _mapper.Map<UpdateUserFriendsDto>(friend);
+
+            return new OkObjectResult(result);
         }
     }
 }
