@@ -21,6 +21,8 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
             set => _user = value;
         }
 
+        public bool? IsAccepted { get; set; }
+
         public StudyRoomUser(ILazyLoader lazyLoader) => _lazyLoader = lazyLoader;
         public StudyRoomUser() { }
     }
