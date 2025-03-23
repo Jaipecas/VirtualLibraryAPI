@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace VirtualLibrary.Domain.StudyRoomEntities
 {
-    public class Notification
+    public class Notification : GenericEntity
     {
         public required string SenderId { get; set; }
 
@@ -15,6 +15,7 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
         }
 
         public required string RecipientId { get; set; }
+
         private User? _recipient;
         public User Recipient
         {
