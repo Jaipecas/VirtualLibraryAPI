@@ -14,6 +14,6 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
                 CreateMap<Notification, AddNotificationDto>();
             }
         }
-        }
     }
 }
+

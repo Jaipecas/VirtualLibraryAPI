@@ -29,5 +29,6 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
 
         private readonly ILazyLoader _lazyLoader;
         public Notification(ILazyLoader lazyLoader) => _lazyLoader = lazyLoader;
+        public Notification() { }
     }
 }
