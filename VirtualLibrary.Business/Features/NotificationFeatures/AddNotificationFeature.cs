@@ -1,6 +1,5 @@
 ﻿
 using AutoMapper;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
@@ -9,7 +8,7 @@ using static VirtualLibrary.Application.Features.NotificationFeatures.AddNotific
 
 namespace VirtualLibrary.Application.Features.NotificationFeatures
 {
-    public class AddNotificationFeature : IRequestHandler<AddNotificationCommand, IActionResult>
+    public partial class AddNotificationFeature : IRequestHandler<AddNotificationCommand, IActionResult>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -40,45 +39,5 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
 
             return new OkObjectResult(result);
         }
-
-        public class AddNotificationCommand : IRequest<IActionResult>
-        {
-            public required string SenderId { get; set; }
-            public required string RecipientId { get; set; }
-            public required string Title { get; set; }
-            public required string Message { get; set; }
-        }
-
-        public class AddNotificationValidations : AbstractValidator<AddNotificationCommand>
-        {
-            public AddNotificationValidations()
-            {
-
-                RuleFor(r => r.SenderId).NotEmpty();
-                RuleFor(r => r.RecipientId).NotEmpty();
-                RuleFor(r => r.Title).NotEmpty();
-                RuleFor(r => r.Message).NotEmpty();
-            }
-        }
-
-
-        public class AddNotificationProfile : Profile
-        {
-            public AddNotificationProfile()
-            {
-                CreateMap<AddNotificationCommand, Notification>();
-                CreateMap<Notification, AddNotificationDto>();
-            }
-        }
-
-        public class AddNotificationDto
-        {
-            public required int Id { get; set; }
-            public required string SenderId { get; set; }
-            public required string RecipientId { get; set; }
-            public required string Title { get; set; }
-            public required string Message { get; set; }
-        }
-
     }
 }
