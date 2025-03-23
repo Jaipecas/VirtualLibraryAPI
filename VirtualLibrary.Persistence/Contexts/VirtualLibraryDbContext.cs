@@ -22,6 +22,10 @@ namespace VirtualLibrary.Persistence.Contexts
             builder.Entity<User>().HasMany(x => x.UserFriends).WithOne(x => x.User).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<UserFriend>().HasOne(x => x.Friend).WithMany().HasForeignKey(x => x.FriendId).OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Notification>()
+                   .HasDiscriminator<string>("NotificationType")
+                   .HasValue<RoomNotification>("Room");
+
             builder.Entity<Notification>().HasOne(x => x.Sender).WithMany().HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Notification>().HasOne(x => x.Recipient).WithMany().HasForeignKey(x => x.RecipientId).OnDelete(DeleteBehavior.Restrict);
         }
