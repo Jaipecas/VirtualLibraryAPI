@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VirtualLibrary.Domain;
+using VirtualLibrary.Domain.Constants;
 using VirtualLibrary.Domain.StudyRoomEntities;
 using VirtualLibrary.Domain.UserEntities;
 
@@ -24,10 +25,12 @@ namespace VirtualLibrary.Persistence.Contexts
 
             builder.Entity<Notification>()
                    .HasDiscriminator<string>("NotificationType")
-                   .HasValue<RoomNotification>("Room");
+                   .HasValue<RoomNotification>(NotificationTypes.RoomNotification);
 
             builder.Entity<Notification>().HasOne(x => x.Sender).WithMany().HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Notification>().HasOne(x => x.Recipient).WithMany().HasForeignKey(x => x.RecipientId).OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<RoomNotification>().HasOne(x => x.StudyRoom).WithMany().HasForeignKey(x => x.RoomId);
         }
 
         public DbSet<StudyRoom> StudyRooms { get; set; }

@@ -11,6 +11,8 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
             public required string RecipientId { get; set; }
             public required string Title { get; set; }
             public required string Message { get; set; }
+            public required string NotificationType { get; set; }
+            public int? RoomId { get; set; }
         }
     }
 }

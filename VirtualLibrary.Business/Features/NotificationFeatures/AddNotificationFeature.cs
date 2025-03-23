@@ -3,6 +3,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
+using VirtualLibrary.Domain.Constants;
 using VirtualLibrary.Domain.StudyRoomEntities;
 using static VirtualLibrary.Application.Features.NotificationFeatures.AddNotificationFeature;
 
@@ -29,7 +30,16 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
 
             if (recipient == null) return new NotFoundObjectResult(new { ErrorMessage = "Receptor no existe" });
 
-            var notification = _mapper.Map<Notification>(request);
+            Notification notification;
+
+            switch (request.NotificationType)
+            {
+                case NotificationTypes.RoomNotification:
+                    notification = _mapper.Map<RoomNotification>(request);
+                    break;
+                default:
+                    return new BadRequestObjectResult(new { ErrorMessage = "EL tipo de notificación indicado no existe" });
+            }
 
             await _unitOfWork.Notifications.Add(notification);
 
