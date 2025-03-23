@@ -29,6 +29,8 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
 
             await _unitOfWork.Notifications.Delete(notification.Id);
 
+            await _unitOfWork.SaveChanges();
+
             return new OkObjectResult(true);
         }
     }
