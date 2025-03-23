@@ -9,6 +9,7 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
         {
             public required int Id { get; set; }
             public required bool IsAccepted { get; set; }
+            public required string NotificationType { get; set; }    
         }
     }
 }
