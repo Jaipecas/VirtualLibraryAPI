@@ -1,15 +1,13 @@
 ﻿
 using AutoMapper;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
-using VirtualLibrary.Domain.StudyRoomEntities;
 using static VirtualLibrary.Application.Features.NotificationFeatures.Queries.GetNotificationsFeature;
 
 namespace VirtualLibrary.Application.Features.NotificationFeatures.Queries
 {
-    public class GetNotificationsFeature : IRequestHandler<GetNoticationsQuery, IActionResult>
+    public partial class GetNotificationsFeature : IRequestHandler<GetNoticationsQuery, IActionResult>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -27,35 +25,5 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures.Queries
 
             return new OkObjectResult(result);
         }
-
-        public class GetNoticationsQuery : IRequest<IActionResult>
-        {
-            public required string UserId { get; set; }
-        }
-
-        public class GetNotificationsValidations : AbstractValidator<GetNoticationsQuery>
-        {
-            public GetNotificationsValidations()
-            {
-                RuleFor(r => r.UserId).NotEmpty();
-            }
-        }
-
-        public class GetNotificationsProfile : Profile
-        {
-            public GetNotificationsProfile()
-            {
-                CreateMap<Notification, NotificationDto>();
-            }
-        }
-
-        public class NotificationDto
-        {
-            public required string Title { get; set; }
-            public required string Message { get; set; }
-            public required string NotificationType { get; set; }
-        }
-
-
     }
 }
