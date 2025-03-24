@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.NotificationFeatures.AddNotificationFeature;
 using static VirtualLibrary.Application.Features.NotificationFeatures.DeleteNotificationFeature;
+using static VirtualLibrary.Application.Features.NotificationFeatures.Queries.GetNotificationsFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.NotificationFeatures
 {
@@ -27,6 +28,12 @@ namespace VirtualLibraryAPI.Controllers.Features.NotificationFeatures
         public async Task<IActionResult> DeleteNotification([FromQuery] DeleteNotificationCommand command)
         {
             return await _mediator.Send(command);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetNotifications([FromQuery] GetNoticationsQuery query)
+        {
+            return await _mediator.Send(query);
         }
     }
 }

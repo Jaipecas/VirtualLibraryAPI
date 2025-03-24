@@ -5,16 +5,16 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Domain.StudyRoomEntities;
-using static VirtualLibrary.Application.Features.NotificationFeatures.Queries.GetNoticationsFeature;
+using static VirtualLibrary.Application.Features.NotificationFeatures.Queries.GetNotificationsFeature;
 
 namespace VirtualLibrary.Application.Features.NotificationFeatures.Queries
 {
-    public class GetNoticationsFeature : IRequestHandler<GetNoticationsQuery, IActionResult> 
+    public class GetNotificationsFeature : IRequestHandler<GetNoticationsQuery, IActionResult>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetNoticationsFeature(IVirtualLibraryUnitOfWork unitOfWork, IMapper mapper)
+        public GetNotificationsFeature(IVirtualLibraryUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -43,8 +43,8 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures.Queries
 
         public class GetNotificationsProfile : Profile
         {
-            GetNotificationsProfile() {
-
+            public GetNotificationsProfile()
+            {
                 CreateMap<Notification, NotificationDto>();
             }
         }
