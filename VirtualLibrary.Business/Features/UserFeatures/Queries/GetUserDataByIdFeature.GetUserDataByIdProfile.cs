@@ -4,16 +4,16 @@ using VirtualLibrary.Domain;
 
 namespace VirtualLibrary.Application.Features.UserFeatures.Queries
 {
-    public partial class GetUserByNameFeature
+    public partial class GetUserDataByIdFeature
     {
-        public class GGetUserByNameProfile : Profile
+        public class GetUserDataByIdProfile : Profile
         {
-            public GGetUserByNameProfile()
+            public GetUserDataByIdProfile()
             {
-                CreateMap<User, GetUserByNameDto>()
+                CreateMap<User, GetUserDataByIdDto>()
                      .ForMember(dest => dest.Friends, opt => opt.MapFrom(src => src.UserFriends.Select(uf => uf.Friend)));
 
-                CreateMap<User, GetUserByNameFriendDto>();
+                CreateMap<User, GetUserDataByIdFriendDto>();
             }
         }
     }
