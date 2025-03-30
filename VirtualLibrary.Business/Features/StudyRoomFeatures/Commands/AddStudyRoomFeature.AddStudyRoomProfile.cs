@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using VirtualLibrary.Domain;
 using VirtualLibrary.Domain.StudyRoomEntities;
+using static VirtualLibrary.Application.Features.StudyRoomFeatures.Queries.GetStudyRoomsByOwnerFeature;
 
 
 namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
@@ -14,6 +16,13 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
                     .ForMember(x => x.Pomodoro, y => y.MapFrom(x => x.Pomodoro));
 
                 CreateMap<PomodoroCommand, Pomodoro>();
+
+                CreateMap<StudyRoom, AddStudyRoomDto>()
+                  .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.StudyRoomUsers.Select(s => s.User).ToList()));
+
+                CreateMap<Pomodoro, AddStudyRoomPomodoroDto>();
+
+                CreateMap<User, AddStudyRoomUserDto>();
 
             }
         }
