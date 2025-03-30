@@ -16,14 +16,16 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
         public IUserRepository Users { get; }
         public IStudyRoomRepository StudyRooms { get; }
         public IStudyRoomUserRepository StudyRoomUser {  get; }
+        public INotification Notifications { get; }
 
-        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms, IHttpContextAccessor httpContextAccessor, IStudyRoomUserRepository studyRoomUser)
+        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms, IHttpContextAccessor httpContextAccessor, IStudyRoomUserRepository studyRoomUser, INotification notification)
         {
             _virtualLibraryDbContext = VirtualLibraryDbContext;
             _httpContextAccessor = httpContextAccessor;
             Users = users;
             StudyRooms = studyRooms;
             StudyRoomUser = studyRoomUser;
+            Notifications = notification;
         }
 
         public async Task<int> SaveChanges()
