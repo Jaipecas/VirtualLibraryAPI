@@ -13,9 +13,12 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
             public AddStudyRoomProfile()
             {
                 CreateMap<AddStudyRoomCommand, StudyRoom>()
-                    .ForMember(x => x.Pomodoro, y => y.MapFrom(x => x.Pomodoro));
+                    .ForMember(x => x.Pomodoro, y => y.MapFrom(x => x.Pomodoro))
+                    .ForMember(x => x.RoomNotifications, y => y.MapFrom(x => x.Notifications));
 
                 CreateMap<PomodoroCommand, Pomodoro>();
+
+                CreateMap<AddStudyRoomNotification, RoomNotification>();
 
                 CreateMap<StudyRoom, AddStudyRoomDto>()
                   .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.StudyRoomUsers.Select(s => s.User).ToList()));

@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Security.Cryptography.Pkcs;
 
 namespace VirtualLibrary.Domain.StudyRoomEntities
 {
@@ -31,6 +32,10 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
             get => _lazyLoader.Load(this, ref _owner);
             set => _owner = value;
         }
+
+        public List<RoomNotification>? RoomNotifications;  
+
+
         public StudyRoom(ILazyLoader lazyLoader) => _lazyLoader = lazyLoader;
         public StudyRoom() { }
     }
