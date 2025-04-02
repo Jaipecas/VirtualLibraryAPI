@@ -7,5 +7,6 @@ namespace VirtualLibrary.Application.Persistence.Repositories
     {
         Task<List<StudyRoomUser>?> GetByRoomId(int roomId);
         bool RemoveRoomUsers(List<StudyRoomUser> roomsUser);
+        Task<List<StudyRoomUser>?> GetRoomsByUser(string userId);
     }
 }
