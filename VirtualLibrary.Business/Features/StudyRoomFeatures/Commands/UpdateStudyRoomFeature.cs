@@ -25,11 +25,11 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             _mapper.Map(request, studyRoom);
 
-            if (request.UsersIds != null && request.UsersIds.Count != 0)
+            if (request.UsersIds != null)
             {
                 var users = await _unitOfWork.Users.GetUsersAsync(request.UsersIds);
 
-                if (users == null || users.Count == 0) return new NotFoundObjectResult(new { errorMessage = "No se han encontrado los usuarios" });
+                if (users == null) return new NotFoundObjectResult(new { errorMessage = "No se han encontrado los usuarios" });
 
                 _unitOfWork.StudyRoomUser.RemoveRoomUsers(studyRoom.StudyRoomUsers);
 
