@@ -25,20 +25,25 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             _mapper.Map(request, studyRoom);
 
-            var users = await _unitOfWork.Users.GetUsersAsync(request.UsersIds);
+            if (request.UsersIds != null && request.UsersIds.Count != 0)
+            {
+                var users = await _unitOfWork.Users.GetUsersAsync(request.UsersIds);
 
-            if (users == null || users.Count == 0) return new NotFoundObjectResult(new { errorMessage = "No se han encontrado los usuarios" });
+                if (users == null || users.Count == 0) return new NotFoundObjectResult(new { errorMessage = "No se han encontrado los usuarios" });
 
-            _unitOfWork.StudyRoomUser.RemoveRoomUsers(studyRoom.StudyRoomUsers);
+                _unitOfWork.StudyRoomUser.RemoveRoomUsers(studyRoom.StudyRoomUsers);
 
-            studyRoom.StudyRoomUsers = users
-                                     .Select(user => new StudyRoomUser { User = user, StudyRoom = studyRoom })
-                                     .ToList();
+                studyRoom.StudyRoomUsers = users
+                                         .Select(user => new StudyRoomUser { User = user, StudyRoom = studyRoom })
+                                         .ToList();
+            }
 
             await _unitOfWork.SaveChanges();
 
-            //TODO hay que devolver el DTo con el id
-            return new OkObjectResult(true);
+            var result = _mapper.Map<UpdateStudyRoomDto>(studyRoom);
+
+            return new OkObjectResult(result);
         }
+
     }
 }

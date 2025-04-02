@@ -11,7 +11,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
             public required int Id { get; set; }
             public required string Name { get; set; }
             public required string Description { get; set; }
-            public required List<string> UsersIds { get; set; }
+            public List<string>? UsersIds { get; set; }
             public required PomodoroUpdateCommand Pomodoro { get; set; }
         }
 
