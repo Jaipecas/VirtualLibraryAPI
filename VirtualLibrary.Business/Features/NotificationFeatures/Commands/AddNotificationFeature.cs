@@ -26,7 +26,7 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
 
             if (sender == null) return new NotFoundObjectResult(new { ErrorMessage = "Emisario no existe" });
 
-            var recipient = await _unitOfWork.Users.FindByIdAsync(request.RecipientId);
+            var recipient = await _unitOfWork.Users.FindByNameAsync(request.RecipientName);
 
             if (recipient == null) return new NotFoundObjectResult(new { ErrorMessage = "Receptor no existe" });
 
@@ -39,6 +39,7 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
                     break;
                 case NotificationTypes.FriendNotification:
                     notification = _mapper.Map<FriendNotification>(request);
+                    notification.RecipientId = recipient.Id;
                     break;
                 default:
                     return new BadRequestObjectResult(new { ErrorMessage = "EL tipo de notificación indicado no existe" });
