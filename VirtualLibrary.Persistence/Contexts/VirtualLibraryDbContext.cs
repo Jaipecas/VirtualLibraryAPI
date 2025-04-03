@@ -33,7 +33,8 @@ namespace VirtualLibrary.Persistence.Contexts
 
             builder.Entity<Notification>()
              .HasDiscriminator<string>("NotificationType")
-             .HasValue<RoomNotification>(NotificationTypes.RoomNotification);
+             .HasValue<RoomNotification>(NotificationTypes.RoomNotification)
+             .HasValue<FriendNotification>(NotificationTypes.FriendNotification);
         }
 
         public DbSet<StudyRoom> StudyRooms { get; set; }

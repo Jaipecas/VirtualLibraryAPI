@@ -37,6 +37,9 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
                 case NotificationTypes.RoomNotification:
                     notification = _mapper.Map<RoomNotification>(request);
                     break;
+                case NotificationTypes.FriendNotification:
+                    notification = _mapper.Map<FriendNotification>(request);
+                    break;
                 default:
                     return new BadRequestObjectResult(new { ErrorMessage = "EL tipo de notificación indicado no existe" });
             }
