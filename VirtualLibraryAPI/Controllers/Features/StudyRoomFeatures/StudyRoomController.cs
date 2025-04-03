@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.DeleteStudyRoomFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.UpdateStudyRoomFeature;
+using static VirtualLibrary.Application.Features.StudyRoomFeatures.Queries.GetInvitedStudyRoomsFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Queries.GetStudyRoomsByOwnerFeature;
 
 
@@ -41,6 +42,12 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
 
         [HttpGet("getStudyRoomsByOwner")]
         public async Task<IActionResult> GetStudyRoomsByOwner([FromQuery] GetStudyRoomsByOwnerQuery request)
+        {
+            return await _mediator.Send(request);
+        }
+
+        [HttpGet("getInvitedStudyRooms")]
+        public async Task<IActionResult> GetStudyRoomsByUser([FromQuery] GetInvitedStudyRoomsQuery request)
         {
             return await _mediator.Send(request);
         }

@@ -18,6 +18,8 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
         public IStudyRoomUserRepository StudyRoomUser {  get; }
         public INotification Notifications { get; }
 
+        //TODO usar lazy inicialation
+
         public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms, IHttpContextAccessor httpContextAccessor, IStudyRoomUserRepository studyRoomUser, INotification notification)
         {
             _virtualLibraryDbContext = VirtualLibraryDbContext;
