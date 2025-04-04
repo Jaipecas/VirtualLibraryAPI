@@ -48,7 +48,7 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
                     var roomUser = room.StudyRoomUsers.Find(ru => ru.User.Id == roomNotification.RecipientId);
 
                     if (roomUser == null) return new NotFoundObjectResult(new { ErrorMessage = "No se encuentra el usuario" });
-                    
+
                     if (request.IsAccepted)
                     {
                         roomUser.IsAccepted = true;
@@ -56,6 +56,12 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
                     else
                     {
                         await _unitOfWork.StudyRoomUser.Delete(roomUser.Id);
+                    }
+                    break;
+                case NotificationTypes.FriendNotification:
+                    if (request.IsAccepted)
+                    {
+                        
                     }
                     break;
                 default:
