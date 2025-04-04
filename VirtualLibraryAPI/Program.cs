@@ -25,7 +25,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IStudyRoomRepository, StudyRoomRepository>();
 builder.Services.AddScoped<IStudyRoomUserRepository, StudyRoomUserRepository>();
-builder.Services.AddScoped<INotification, NotificationRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<VirtualLibraryDbContext>()

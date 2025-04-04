@@ -16,11 +16,12 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
         public IUserRepository Users { get; }
         public IStudyRoomRepository StudyRooms { get; }
         public IStudyRoomUserRepository StudyRoomUser {  get; }
-        public INotification Notifications { get; }
+        public INotificationRepository Notifications { get; }
+        public IUserFriendRepository UserFriends { get; }
 
         //TODO usar lazy inicialation
 
-        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms, IHttpContextAccessor httpContextAccessor, IStudyRoomUserRepository studyRoomUser, INotification notification)
+        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms, IHttpContextAccessor httpContextAccessor, IStudyRoomUserRepository studyRoomUser, INotificationRepository notification, IUserFriendRepository userFriend)
         {
             _virtualLibraryDbContext = VirtualLibraryDbContext;
             _httpContextAccessor = httpContextAccessor;
@@ -28,6 +29,7 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
             StudyRooms = studyRooms;
             StudyRoomUser = studyRoomUser;
             Notifications = notification;
+            UserFriends = userFriend;
         }
 
         public async Task<int> SaveChanges()

@@ -6,7 +6,7 @@ using VirtualLibrary.Persistence.Contexts;
 
 namespace VirtualLibrary.Persistence.Repositories
 {
-    public  class NotificationRepository : GenericRepository<Notification>, INotification
+    public  class NotificationRepository : GenericRepository<Notification>, INotificationRepository
     {
         private readonly VirtualLibraryDbContext _virtualLibraryContext;
 
