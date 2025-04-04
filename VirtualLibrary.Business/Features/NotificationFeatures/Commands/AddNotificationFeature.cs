@@ -40,7 +40,13 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
                     notification = _mapper.Map<RoomNotification>(request);
                     break;
                 case NotificationTypes.FriendNotification:
+
                     notification = _mapper.Map<FriendNotification>(request);
+
+                    var isFriend = await _unitOfWork.UserFriends.ExistFriend(recipient.Id);
+
+                    if (isFriend) return new BadRequestObjectResult(new { ErrorMessage = "Ya tienes agregado el amigo" });
+
                     notification.RecipientId = recipient.Id;
                     break;
                 default:

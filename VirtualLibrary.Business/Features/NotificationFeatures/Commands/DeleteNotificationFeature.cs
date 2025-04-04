@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Domain.Constants;
 using VirtualLibrary.Domain.StudyRoomEntities;
+using VirtualLibrary.Domain.UserEntities;
 using static VirtualLibrary.Application.Features.NotificationFeatures.DeleteNotificationFeature;
 
 namespace VirtualLibrary.Application.Features.NotificationFeatures
@@ -59,9 +60,11 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
                     }
                     break;
                 case NotificationTypes.FriendNotification:
+
                     if (request.IsAccepted)
                     {
-                        
+                        await _unitOfWork.UserFriends.Add(new UserFriend { UserId = notification.SenderId, FriendId = notification.RecipientId });
+                        await _unitOfWork.UserFriends.Add(new UserFriend { UserId = notification.RecipientId, FriendId = notification.SenderId });
                     }
                     break;
                 default:
