@@ -9,6 +9,7 @@ namespace VirtualLibrary.Application.Persistence
         IStudyRoomRepository StudyRooms { get; }
         IStudyRoomUserRepository StudyRoomUser { get; }
         INotification Notifications { get; }
+        IUserFriendRepository UserFriends { get; }
         Task<int> SaveChanges();
     }
 }
