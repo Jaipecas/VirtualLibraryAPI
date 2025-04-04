@@ -23,11 +23,5 @@ namespace VirtualLibraryAPI.Controllers.Features.UserFeatures
         {
             return await _mediator.Send(request);
         }
-
-        [HttpPost("friends")]
-        public async Task<IActionResult> UpdateUserFriends(UpdateUserFriendsCommand request)
-        {
-            return await _mediator.Send(request);
-        }
     }
 }
