@@ -26,6 +26,8 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
 
             if (sender == null) return new NotFoundObjectResult(new { ErrorMessage = "Emisario no existe" });
 
+            if (sender.UserName == request.RecipientName) return new BadRequestObjectResult(new { ErrorMessage = "No puedes enviarte notificaciones a ti mismo" });
+
             var recipient = await _unitOfWork.Users.FindByNameAsync(request.RecipientName);
 
             if (recipient == null) return new NotFoundObjectResult(new { ErrorMessage = "Receptor no existe" });
