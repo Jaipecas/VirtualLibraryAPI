@@ -10,7 +10,9 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures.Queries
         {
             public GetNotificationsProfile()
             {
-                CreateMap<Notification, NotificationDto>();
+                CreateMap<Notification, NotificationDto>()
+                    .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.UserName));
+
             }
         }
     }

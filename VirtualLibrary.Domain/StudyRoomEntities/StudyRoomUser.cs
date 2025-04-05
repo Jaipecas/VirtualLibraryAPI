@@ -7,15 +7,17 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
     {
         private readonly ILazyLoader _lazyLoader;
 
-        private StudyRoom _studyRoom;
-        public required StudyRoom StudyRoom
+        public required int StudyRoomId { get; set; }
+        private StudyRoom? _studyRoom;
+        public StudyRoom? StudyRoom
         {
             get => _lazyLoader.Load(this, ref _studyRoom);
             set => _studyRoom = value;
         }
 
-        private User _user;
-        public required User User
+        public required string UserId { get; set; }
+        private User? _user;
+        public User? User
         {
             get => _lazyLoader.Load(this, ref _user);
             set => _user = value;

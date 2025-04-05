@@ -8,7 +8,7 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
         public required string SenderId { get; set; }
 
         private User? _sender;
-        public User Sender
+        public User? Sender
         {
             get => _lazyLoader.Load(this, ref _sender);
             set => _sender = value;
@@ -17,7 +17,7 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
         public required string RecipientId { get; set; }
 
         private User? _recipient;
-        public User Recipient
+        public User? Recipient
         {
             get => _lazyLoader.Load(this, ref _recipient);
             set => _recipient = value;

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Domain.Constants;
 using VirtualLibrary.Domain.StudyRoomEntities;
+using VirtualLibrary.Domain.UserEntities;
 using static VirtualLibrary.Application.Features.NotificationFeatures.DeleteNotificationFeature;
 
 namespace VirtualLibrary.Application.Features.NotificationFeatures
@@ -35,30 +36,38 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
 
             if (notification == null) return new NotFoundObjectResult(new { ErrorMessage = "No se encuentra la notificación" });
 
-            if (request.IsAccepted)
+            switch (request.NotificationType)
             {
-                switch (request.NotificationType)
-                {
-                    case NotificationTypes.RoomNotification:
+                case NotificationTypes.RoomNotification:
 
-                        var roomNotification = _mapper.Map<RoomNotification>(notification);
+                    var roomNotification = _mapper.Map<RoomNotification>(notification);
 
-                        var room = await _unitOfWork.StudyRooms.GetById(roomNotification.RoomId);
+                    var room = await _unitOfWork.StudyRooms.GetById(roomNotification.RoomId);
 
-                        if (room == null) return new NotFoundObjectResult(new { ErrorMessage = "No la sala de estudio" });
+                    var roomUser = room?.StudyRoomUsers.Find(ru => ru.UserId == roomNotification.RecipientId);
 
-                        var user = room.StudyRoomUsers.Find(roomUser => roomUser.User.Id == roomNotification.RecipientId);
+                    if (roomUser != null)
+                    {
+                        if (request.IsAccepted)
+                        {
+                            roomUser.IsAccepted = true;
+                        }
+                        else
+                        {
+                            await _unitOfWork.StudyRoomUser.Delete(roomUser.Id);
+                        }
+                    }
+                    break;
+                case NotificationTypes.FriendNotification:
 
-                        if (user == null) return new NotFoundObjectResult(new { ErrorMessage = "No se encuentra el usuario" });
-
-                        user.IsAccepted = true;
-
-                        await _unitOfWork.SaveChanges();
-
-                        break;
-                    default:
-                        return new BadRequestObjectResult(new { ErrorMessage = "EL tipo de notificación indicado no existe" });
-                }
+                    if (request.IsAccepted)
+                    {
+                        await _unitOfWork.UserFriends.Add(new UserFriend { UserId = notification.SenderId, FriendId = notification.RecipientId });
+                        await _unitOfWork.UserFriends.Add(new UserFriend { UserId = notification.RecipientId, FriendId = notification.SenderId });
+                    }
+                    break;
+                default:
+                    return new BadRequestObjectResult(new { ErrorMessage = "EL tipo de notificación indicado no existe" });
             }
 
             await _unitOfWork.Notifications.Delete(notification.Id);

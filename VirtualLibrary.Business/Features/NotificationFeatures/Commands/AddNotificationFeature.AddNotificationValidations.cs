@@ -10,7 +10,7 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
             {
             {
                 RuleFor(r => r.SenderId).NotEmpty();
-                RuleFor(r => r.RecipientId).NotEmpty();
+                RuleFor(r => r.RecipientName).NotEmpty();
                 RuleFor(r => r.Title).NotEmpty();
                 RuleFor(r => r.Message).NotEmpty();
             }

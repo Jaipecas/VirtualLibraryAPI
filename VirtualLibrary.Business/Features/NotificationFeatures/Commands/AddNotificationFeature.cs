@@ -26,7 +26,9 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
 
             if (sender == null) return new NotFoundObjectResult(new { ErrorMessage = "Emisario no existe" });
 
-            var recipient = await _unitOfWork.Users.FindByIdAsync(request.RecipientId);
+            if (sender.UserName == request.RecipientName) return new BadRequestObjectResult(new { ErrorMessage = "No puedes enviarte notificaciones a ti mismo" });
+
+            var recipient = await _unitOfWork.Users.FindByNameAsync(request.RecipientName);
 
             if (recipient == null) return new NotFoundObjectResult(new { ErrorMessage = "Receptor no existe" });
 
@@ -36,6 +38,16 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
             {
                 case NotificationTypes.RoomNotification:
                     notification = _mapper.Map<RoomNotification>(request);
+                    break;
+                case NotificationTypes.FriendNotification:
+
+                    notification = _mapper.Map<FriendNotification>(request);
+
+                    var isFriend = await _unitOfWork.UserFriends.ExistFriend(recipient.Id);
+
+                    if (isFriend) return new BadRequestObjectResult(new { ErrorMessage = "Ya tienes agregado el amigo" });
+
+                    notification.RecipientId = recipient.Id;
                     break;
                 default:
                     return new BadRequestObjectResult(new { ErrorMessage = "EL tipo de notificación indicado no existe" });

@@ -12,6 +12,7 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
             {
                 CreateMap<AddNotificationCommand, Notification>();
                 CreateMap<AddNotificationCommand, RoomNotification>();
+                CreateMap<AddNotificationCommand, FriendNotification>();
                 CreateMap<Notification, AddNotificationDto>();
             }
         }

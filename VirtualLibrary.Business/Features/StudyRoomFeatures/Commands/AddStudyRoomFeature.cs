@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
+using VirtualLibrary.Domain.Constants;
 using VirtualLibrary.Domain.StudyRoomEntities;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 
@@ -22,20 +23,30 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
         {
             var studyRoom = _mapper.Map<StudyRoom>(request);
 
+            var owner = await _unitOfWork.Users.FindByIdAsync(request.OwnerId);
+
+            if (owner == null) return new BadRequestObjectResult(new { errorMessage = "Not found owner" });
+
+            studyRoom.Owner = owner;
+
             if (request.UsersIds != null && request.UsersIds.Count != 0)
             {
                 var users = await _unitOfWork.Users.GetUsersAsync(request.UsersIds);
 
                 if (users == null || users.Count == 0) return new BadRequestObjectResult(new { errorMessage = "Not found users" });
 
-                studyRoom.StudyRoomUsers = users.Select(user => new StudyRoomUser { StudyRoom = studyRoom, User = user }).ToList();
+                studyRoom.StudyRoomUsers = users.Select(user => new StudyRoomUser { StudyRoomId = studyRoom.Id, UserId = user.Id }).ToList();
+
+                studyRoom.RoomNotifications = users.Select(user => new RoomNotification
+                {
+                    SenderId = owner.Id,
+                    RecipientId = user.Id,
+                    Title = $"Invitación Sala: {request.Name}",
+                    Message = $"{request.Description}",
+                    RoomId = studyRoom.Id,
+                    NotificationType = NotificationTypes.RoomNotification
+                }).ToList();
             }
-
-            var owner = await _unitOfWork.Users.FindByIdAsync(request.OwnerId);
-
-            if (owner == null) return new BadRequestObjectResult(new { errorMessage = "Not found owner" });
-
-            studyRoom.Owner = owner;
 
             var roomCreated = await _unitOfWork.StudyRooms.Add(studyRoom);
 
