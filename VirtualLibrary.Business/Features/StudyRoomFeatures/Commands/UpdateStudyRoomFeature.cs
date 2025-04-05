@@ -34,7 +34,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
                 _unitOfWork.StudyRoomUser.RemoveRoomUsers(studyRoom.StudyRoomUsers);
 
                 studyRoom.StudyRoomUsers = users
-                                         .Select(user => new StudyRoomUser { User = user, StudyRoom = studyRoom })
+                                         .Select(user => new StudyRoomUser { UserId = user.Id, StudyRoomId = studyRoom.Id })
                                          .ToList();
             }
 
