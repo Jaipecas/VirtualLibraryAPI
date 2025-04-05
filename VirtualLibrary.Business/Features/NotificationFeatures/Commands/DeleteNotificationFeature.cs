@@ -44,19 +44,18 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
 
                     var room = await _unitOfWork.StudyRooms.GetById(roomNotification.RoomId);
 
-                    if (room == null) return new NotFoundObjectResult(new { ErrorMessage = "No la sala de estudio" });
+                    var roomUser = room?.StudyRoomUsers.Find(ru => ru.UserId == roomNotification.RecipientId);
 
-                    var roomUser = room.StudyRoomUsers.Find(ru => ru.User.Id == roomNotification.RecipientId);
-
-                    if (roomUser == null) return new NotFoundObjectResult(new { ErrorMessage = "No se encuentra el usuario" });
-
-                    if (request.IsAccepted)
+                    if (roomUser != null)
                     {
-                        roomUser.IsAccepted = true;
-                    }
-                    else
-                    {
-                        await _unitOfWork.StudyRoomUser.Delete(roomUser.Id);
+                        if (request.IsAccepted)
+                        {
+                            roomUser.IsAccepted = true;
+                        }
+                        else
+                        {
+                            await _unitOfWork.StudyRoomUser.Delete(roomUser.Id);
+                        }
                     }
                     break;
                 case NotificationTypes.FriendNotification:

@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
+using VirtualLibrary.Domain.Constants;
 using VirtualLibrary.Domain.StudyRoomEntities;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.UpdateStudyRoomFeature;
 
@@ -25,17 +26,33 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             _mapper.Map(request, studyRoom);
 
-            if (request.UsersIds != null)
+            if (request.UsersIds != null && request.UsersIds.Count != 0)
             {
                 var users = await _unitOfWork.Users.GetUsersAsync(request.UsersIds);
 
                 if (users == null) return new NotFoundObjectResult(new { errorMessage = "No se han encontrado los usuarios" });
 
+                var roomUsersIds = studyRoom.StudyRoomUsers.Select(su => su.UserId).ToList();
+
+                var newUsers = users.Where(user => !roomUsersIds.Contains(user.Id));
+       
+                var notifications = newUsers.Select(user => new RoomNotification
+                {
+                    SenderId = studyRoom.OwnerId,
+                    RecipientId = user.Id,
+                    Title = $"Invitación Sala: {studyRoom.Name}",
+                    Message = $"{studyRoom.Description}",
+                    RoomId = studyRoom.Id,
+                    NotificationType = NotificationTypes.RoomNotification
+                }).ToList();
+
+                notifications.ForEach(async notification => await _unitOfWork.Notifications.Add(notification));  
+
                 _unitOfWork.StudyRoomUser.RemoveRoomUsers(studyRoom.StudyRoomUsers);
 
                 studyRoom.StudyRoomUsers = users
-                                         .Select(user => new StudyRoomUser { UserId = user.Id, StudyRoomId = studyRoom.Id })
-                                         .ToList();
+                                          .Select(user => new StudyRoomUser { UserId = user.Id, StudyRoomId = studyRoom.Id })
+                                          .ToList();
             }
 
             await _unitOfWork.SaveChanges();
