@@ -26,7 +26,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             _mapper.Map(request, studyRoom);
 
-            if (request.UsersIds != null && request.UsersIds.Count != 0)
+            if (request.UsersIds != null && request.UsersIds.Count > 0)
             {
                 var users = await _unitOfWork.Users.GetUsersAsync(request.UsersIds);
 
@@ -34,8 +34,8 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
                 var roomUsersIds = studyRoom.StudyRoomUsers.Select(su => su.UserId).ToList();
 
-                var newUsers = users.Where(user => !roomUsersIds.Contains(user.Id));
-       
+                var newUsers = users.Where(user => !roomUsersIds.Contains(user.Id)).ToList();
+
                 var notifications = newUsers.Select(user => new RoomNotification
                 {
                     SenderId = studyRoom.OwnerId,
@@ -46,13 +46,13 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
                     NotificationType = NotificationTypes.RoomNotification
                 }).ToList();
 
-                notifications.ForEach(async notification => await _unitOfWork.Notifications.Add(notification));  
+                notifications.ForEach(async notification => await _unitOfWork.Notifications.Add(notification));
 
+                newUsers.ForEach(async user => await _unitOfWork.StudyRoomUser.Add(new StudyRoomUser { UserId = user.Id, StudyRoomId = studyRoom.Id }));
+            }
+            else
+            {
                 _unitOfWork.StudyRoomUser.RemoveRoomUsers(studyRoom.StudyRoomUsers);
-
-                studyRoom.StudyRoomUsers = users
-                                          .Select(user => new StudyRoomUser { UserId = user.Id, StudyRoomId = studyRoom.Id })
-                                          .ToList();
             }
 
             await _unitOfWork.SaveChanges();
