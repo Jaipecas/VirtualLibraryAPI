@@ -10,13 +10,11 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
         public required string Name { get; set; }
         public required string Description { get; set; }
         public required string OwnerId { get; set; }
-        public DateTime? StartTime { get; set; }
-        public bool? IsStudyTime { get; set; } 
 
         public List<RoomNotification>? RoomNotifications;
 
 
-        private List<StudyRoomUser> _studyRoomUsers;
+        private List<StudyRoomUser>? _studyRoomUsers;
         public List<StudyRoomUser>? StudyRoomUsers
         {
             get => _lazyLoader.Load(this, ref _studyRoomUsers);

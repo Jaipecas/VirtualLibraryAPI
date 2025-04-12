@@ -18,6 +18,8 @@
             public required string Name { get; set; }
             public required int PomodoroTime { get; set; }
             public required int BreakTime { get; set; }
+            public DateTime? StartTime { get; set; }
+            public bool? IsStudyTime { get; set; }
         }
 
         public class GetStudyRoomByIdUserDto
