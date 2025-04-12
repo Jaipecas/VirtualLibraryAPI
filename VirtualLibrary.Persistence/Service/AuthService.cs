@@ -55,7 +55,7 @@ namespace VirtualLibrary.Persistence.Service
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddHours(Double.Parse(_configuration["JWT:ExpirationInHours"]!))
+                Expires = DateTime.Now.AddHours(Double.Parse(_configuration["JWT:ExpirationInHours"]!))
             };
 
             _httpContextAccessor.HttpContext!.Response.Cookies.Append("jwt", token, cookieOptions);
@@ -65,7 +65,7 @@ namespace VirtualLibrary.Persistence.Service
         {
             var cookieOptions = new CookieOptions
             {
-                Expires = DateTime.UtcNow.AddDays(-1),
+                Expires = DateTime.Now.AddDays(-1),
                 HttpOnly = true,
                 Secure = true, 
                 SameSite = SameSiteMode.None
