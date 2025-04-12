@@ -8,8 +8,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
         public class UpdateRoomTimerCommand : IRequest<IActionResult>
         {
             public required int RoomId { get; set; }
-            public DateTime? StartTime { get; set; }
-            public bool? IsStudyTime { get; set; }
+            public required bool IsStudyTime { get; set; }
         }
     }
 }

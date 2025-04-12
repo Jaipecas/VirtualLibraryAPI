@@ -42,12 +42,12 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
             {
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedDate = DateTime.UtcNow;
+                    entry.Entity.CreatedDate = DateTime.Now;
                     entry.Entity.CreatedBy = userId;
                 }
                 else if (entry.State == EntityState.Modified)
                 {
-                    entry.Entity.UpdatedDate = DateTime.UtcNow;
+                    entry.Entity.UpdatedDate = DateTime.Now;
                     entry.Entity.UpdatedBy = userId;
                 }
             }

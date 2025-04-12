@@ -29,7 +29,9 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
             if (pomodoro == null) return new NotFoundObjectResult(new { ErrorMessage = "No se ha encontrado el pomodoro" });
 
             pomodoro.IsStudyTime = request.IsStudyTime;
-            pomodoro.StartTime = request.StartTime;
+            pomodoro.EndTime = DateTime.Now.AddMinutes(request.IsStudyTime ? pomodoro.PomodoroTime : pomodoro.BreakTime);
+
+            await _unitOfWork.SaveChanges();
 
             var result = _mapper.Map<UpdateRoomTimerPomodoroDto>(pomodoro);
 
