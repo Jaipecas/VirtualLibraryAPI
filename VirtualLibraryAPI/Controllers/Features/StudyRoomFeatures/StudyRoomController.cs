@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.DeleteStudyRoomFeature;
+using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.UpdateRoomTimerFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.UpdateStudyRoomFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Queries.GetInvitedStudyRoomsFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Queries.GetStudyRoomByIdFeature;
@@ -57,6 +58,12 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
         public async Task<IActionResult> GetStudyRoomById([FromQuery] GetStudyRoomByIdQuery request)
         {
             return await _mediator.Send(request);
+        }
+
+        [HttpPut("updateRoomTimer")]
+        public async Task<IActionResult> UpdateRoomTimer(UpdateRoomTimerCommand command)
+        {
+            return await _mediator.Send(command);
         }
     }
 }
