@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtualLibrary.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using VirtualLibrary.Persistence.Contexts;
 namespace VirtualLibrary.Persistence.Migrations
 {
     [DbContext(typeof(VirtualLibraryDbContext))]
-    partial class VirtualLibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250409174257_addStartTime_IsStudyTime")]
+    partial class addStartTime_IsStudyTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -533,7 +536,7 @@ namespace VirtualLibrary.Persistence.Migrations
                     b.HasOne("VirtualLibrary.Domain.StudyRoomEntities.StudyRoom", "StudyRoom")
                         .WithOne("Pomodoro")
                         .HasForeignKey("VirtualLibrary.Domain.StudyRoomEntities.Pomodoro", "StudyRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("StudyRoom");

@@ -15,9 +15,9 @@ namespace VirtualLibrary.Persistence.Contexts
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<StudyRoom>().HasMany(x => x.StudyRoomUsers).WithOne(x => x.StudyRoom).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<StudyRoom>().HasMany(x => x.StudyRoomUsers).WithOne(x => x.StudyRoom).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<StudyRoom>().HasOne(x => x.Pomodoro).WithOne(x => x.StudyRoom).HasForeignKey<Pomodoro>(x => x.StudyRoomId).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<StudyRoom>().HasOne(x => x.Owner).WithMany(x => x.StudyRooms).HasForeignKey(x => x.OwnerId);
+            builder.Entity<StudyRoom>().HasOne(x => x.Owner).WithMany(x => x.StudyRooms).HasForeignKey(x => x.OwnerId).OnDelete(DeleteBehavior.Restrict);
 
             //TODO repasar esto DeleteBehavior.Restrict
             builder.Entity<User>().HasMany(x => x.UserFriends).WithOne(x => x.User).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);

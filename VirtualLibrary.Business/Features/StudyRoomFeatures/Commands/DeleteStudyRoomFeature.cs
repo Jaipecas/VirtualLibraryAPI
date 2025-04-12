@@ -22,9 +22,9 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             if (studyRoom == null) return new NotFoundObjectResult(new { errorMessage = "No se ha enconntrado sala de estudio" });
 
-            var isDeleted = await _unitOfWork.StudyRooms.Delete(studyRoom.Id);
+            studyRoom.StudyRoomUsers?.ForEach(async ru => await _unitOfWork.StudyRoomUser.Delete(ru.Id));           
 
-            if (!isDeleted) return new BadRequestObjectResult(new { errorMessage = "Error al elimnar la sala de estudio" });
+            await _unitOfWork.StudyRooms.Delete(studyRoom.Id);
 
             await _unitOfWork.SaveChanges();
 
