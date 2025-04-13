@@ -23,7 +23,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomUserFeatures.Commands
 
             if (roomUser == null) return new NotFoundObjectResult(new { ErrorMessage = "No se ha encontrado el usuario en la sala" });
 
-            _mapper.Map(request, roomUser);
+            roomUser.IsConnected = request.IsConnected;
 
             await _unitOfWork.SaveChanges();
 
