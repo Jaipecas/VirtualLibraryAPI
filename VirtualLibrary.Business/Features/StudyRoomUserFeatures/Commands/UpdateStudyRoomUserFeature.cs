@@ -3,9 +3,9 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
-using static VirtualLibrary.Application.Features.StudyRoomUserFeatures.UpdateStudyRoomUserFeature;
+using static VirtualLibrary.Application.Features.StudyRoomUserFeatures.Commands.UpdateStudyRoomUserFeature;
 
-namespace VirtualLibrary.Application.Features.StudyRoomUserFeatures
+namespace VirtualLibrary.Application.Features.StudyRoomUserFeatures.Commands
 {
     public partial class UpdateStudyRoomUserFeature : IRequestHandler<UpdateStudyRoomUserCommand, IActionResult>
     {

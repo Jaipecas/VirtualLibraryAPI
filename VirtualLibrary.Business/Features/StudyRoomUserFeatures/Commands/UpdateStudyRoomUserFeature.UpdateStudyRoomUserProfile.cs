@@ -2,7 +2,7 @@
 using AutoMapper;
 using VirtualLibrary.Domain.StudyRoomEntities;
 
-namespace VirtualLibrary.Application.Features.StudyRoomUserFeatures
+namespace VirtualLibrary.Application.Features.StudyRoomUserFeatures.Commands
 {
     public partial class UpdateStudyRoomUserFeature
     {
