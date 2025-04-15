@@ -49,9 +49,13 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
                 notifications.ForEach(async notification => await _unitOfWork.Notifications.Add(notification));
 
                 newUsers.ForEach(async user => await _unitOfWork.StudyRoomUser.Add(new StudyRoomUser { UserId = user.Id, StudyRoomId = studyRoom.Id }));
-            }    
+            }
 
-            if (request?.UsersIds?.Count == 0) _unitOfWork.StudyRoomUser.RemoveRoomUsers(studyRoom.StudyRoomUsers);
+            if (request?.UsersIds?.Count == 0)
+            {
+                var removeUsers = studyRoom!.StudyRoomUsers!.Where(ru => ru.UserId != studyRoom.OwnerId).ToList();
+                _unitOfWork.StudyRoomUser.RemoveRoomUsers(removeUsers);
+            }
 
             await _unitOfWork.SaveChanges();
 

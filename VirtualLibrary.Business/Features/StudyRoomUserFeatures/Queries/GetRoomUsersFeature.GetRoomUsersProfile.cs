@@ -10,7 +10,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomUserFeatures.Queries
         {
             public GetRoomUsersProfile()
             {
-                CreateMap<User, GetRoomUsersUserDto>();  
+                CreateMap<User, GetRoomUsersDto>();  
             }
         }
     }

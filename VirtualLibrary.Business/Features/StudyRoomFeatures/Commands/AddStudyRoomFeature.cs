@@ -51,9 +51,6 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
                     RoomId = studyRoom.Id,
                     NotificationType = NotificationTypes.RoomNotification
                 }).ToList();
-
-
-
             }
 
             var roomCreated = await _unitOfWork.StudyRooms.Add(studyRoom);

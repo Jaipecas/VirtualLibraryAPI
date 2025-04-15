@@ -21,13 +21,15 @@ namespace VirtualLibrary.Application.Features.StudyRoomUserFeatures.Queries
         {
             var roomUsers = await _unitOfWork.StudyRoomUser.GetByRoomId(request.RoomId);
 
-            GetRoomUsersDto? result = null;
+            List<GetRoomUsersDto>? result = null;
 
             if (roomUsers!.Count != 0)
             {
                 roomUsers = roomUsers.Where(ru => ru.IsConnected == request.IsConnected).ToList();
 
-                result = _mapper.Map<GetRoomUsersDto>(roomUsers);
+                var users = roomUsers.Select(ru => ru.User).ToList();
+
+                result = _mapper.Map<List<GetRoomUsersDto>>(users);
 
                 return new OkObjectResult(result);
             }
