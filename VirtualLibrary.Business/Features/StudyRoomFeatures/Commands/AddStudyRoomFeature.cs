@@ -37,6 +37,9 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
                 studyRoom.StudyRoomUsers = users.Select(user => new StudyRoomUser { StudyRoomId = studyRoom.Id, UserId = user.Id }).ToList();
 
+                //añadimos tambien el owner como usuario de la sala
+                studyRoom.StudyRoomUsers.Add(new StudyRoomUser { StudyRoomId = studyRoom.Id, UserId = request.OwnerId });
+
                 studyRoom.RoomNotifications = users.Select(user => new RoomNotification
                 {
                     SenderId = owner.Id,
@@ -46,6 +49,9 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
                     RoomId = studyRoom.Id,
                     NotificationType = NotificationTypes.RoomNotification
                 }).ToList();
+
+
+
             }
 
             var roomCreated = await _unitOfWork.StudyRooms.Add(studyRoom);
