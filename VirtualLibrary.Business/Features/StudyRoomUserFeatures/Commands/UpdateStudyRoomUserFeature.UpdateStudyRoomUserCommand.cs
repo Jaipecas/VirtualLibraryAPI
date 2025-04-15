@@ -7,7 +7,8 @@ namespace VirtualLibrary.Application.Features.StudyRoomUserFeatures.Commands
     {
         public class UpdateStudyRoomUserCommand : IRequest<IActionResult>
         {
-            public required int RoomUserId { get; set; }
+            public required int RoomId { get; set; }
+            public required string UserId { get; set; }
             public required bool IsConnected { get; set; }
         }
     }

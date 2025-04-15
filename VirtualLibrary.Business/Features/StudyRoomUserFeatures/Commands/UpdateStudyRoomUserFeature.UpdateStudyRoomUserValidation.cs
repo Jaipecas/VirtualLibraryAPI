@@ -8,7 +8,8 @@ namespace VirtualLibrary.Application.Features.StudyRoomUserFeatures.Commands
         {
             public UpdateStudyRoomUserValidation()
             {
-                RuleFor(r => r.RoomUserId).NotEmpty().GreaterThan(0);
+                RuleFor(r => r.RoomId).NotEmpty().GreaterThan(0);
+                RuleFor(r => r.UserId).NotEmpty();
             }
         }
     }

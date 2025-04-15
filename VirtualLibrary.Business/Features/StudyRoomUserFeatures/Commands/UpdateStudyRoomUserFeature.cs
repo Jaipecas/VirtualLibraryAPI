@@ -19,9 +19,13 @@ namespace VirtualLibrary.Application.Features.StudyRoomUserFeatures.Commands
         }
         public async Task<IActionResult> Handle(UpdateStudyRoomUserCommand request, CancellationToken cancellationToken)
         {
-            var roomUser = await _unitOfWork.StudyRoomUser.GetById(request.RoomUserId);
+            var roomUsers = await _unitOfWork.StudyRoomUser.GetByRoomId(request.RoomId);
 
-            if (roomUser == null) return new NotFoundObjectResult(new { ErrorMessage = "No se ha encontrado el usuario en la sala" });
+            if (roomUsers == null) return new NotFoundObjectResult(new { ErrorMessage = "No existen usuarios en esta sala" });
+
+            var roomUser = roomUsers.FirstOrDefault(ru => ru.UserId == request.UserId);
+
+            if (roomUser == null) return new NotFoundObjectResult(new { ErrorMessage = "El usuario no se encuentra en la sala" });
 
             roomUser.IsConnected = request.IsConnected;
 

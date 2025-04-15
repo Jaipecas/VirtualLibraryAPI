@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.StudyRoomUserFeatures.Commands.UpdateStudyRoomUserFeature;
 
 
 namespace VirtualLibraryAPI.Controllers.Features.StudyRoomUserFeatures
-{  
+{
+    [Authorize]
     [Route("api/studyroomuser")]
     [ApiController]
     public class StudyRoomUserController
