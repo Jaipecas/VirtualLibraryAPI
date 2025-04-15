@@ -29,16 +29,18 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             studyRoom.Owner = owner;
 
+            //añadimos tambien el owner como usuario de la sala
+            studyRoom.StudyRoomUsers = new List<StudyRoomUser> { new() { StudyRoomId = studyRoom.Id, UserId = request.OwnerId } };
+
             if (request.UsersIds != null && request.UsersIds.Count != 0)
             {
                 var users = await _unitOfWork.Users.GetUsersAsync(request.UsersIds);
 
                 if (users == null || users.Count == 0) return new BadRequestObjectResult(new { errorMessage = "Not found users" });
 
-                studyRoom.StudyRoomUsers = users.Select(user => new StudyRoomUser { StudyRoomId = studyRoom.Id, UserId = user.Id }).ToList();
+                var newUsers = users.Select(user => new StudyRoomUser { StudyRoomId = studyRoom.Id, UserId = user.Id }).ToList();
 
-                //añadimos tambien el owner como usuario de la sala
-                studyRoom.StudyRoomUsers.Add(new StudyRoomUser { StudyRoomId = studyRoom.Id, UserId = request.OwnerId });
+                studyRoom.StudyRoomUsers.AddRange(newUsers);
 
                 studyRoom.RoomNotifications = users.Select(user => new RoomNotification
                 {
