@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace VirtualLibrary.Domain.BoardEntities
 {
-    public class CardList
+    public class CardList : GenericEntity
     {
         public required string Title { get; set; }       
         public required int BoardId { get; set; }
