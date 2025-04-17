@@ -8,13 +8,13 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
         {
             public AddNotificationValidations()
             {
-            {
-                RuleFor(r => r.SenderId).NotEmpty();
-                RuleFor(r => r.RecipientName).NotEmpty();
-                RuleFor(r => r.Title).NotEmpty();
-                RuleFor(r => r.Message).NotEmpty();
+                {
+                    RuleFor(r => r.SenderId).NotEmpty();
+                    RuleFor(r => r.RecipientName).NotEmpty();
+                    RuleFor(r => r.Title).NotEmpty();
+                    RuleFor(r => r.Message).NotEmpty();
+                }
             }
-        }
         }
     }
 }
