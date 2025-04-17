@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VirtualLibrary.Domain;
+using VirtualLibrary.Domain.BoardEntities;
 using VirtualLibrary.Domain.Constants;
 using VirtualLibrary.Domain.StudyRoomEntities;
 using VirtualLibrary.Domain.UserEntities;
@@ -31,6 +32,11 @@ namespace VirtualLibrary.Persistence.Contexts
             builder.Entity<StudyRoom>().HasMany(x => x.RoomNotifications).WithOne(x => x.StudyRoom).HasForeignKey(x => x.RoomId);
 
 
+            //boards
+            builder.Entity<Board>().HasMany(x => x.CardLists).WithOne().HasForeignKey(x => x.BoardId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<CardList>().HasMany(x => x.Cards).WithOne().HasForeignKey(x => x.CardListId).OnDelete(DeleteBehavior.Cascade);
+
+
             builder.Entity<Notification>()
              .HasDiscriminator<string>("NotificationType")
              .HasValue<RoomNotification>(NotificationTypes.RoomNotification)
@@ -42,5 +48,8 @@ namespace VirtualLibrary.Persistence.Contexts
         public DbSet<StudyRoomUser> StudyRoomUsers { get; set; }
         public DbSet<UserFriend> UserFriends { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Board> Boards { get; set; }
+        public DbSet<CardList> CardLists { get; set; }
+        public DbSet<Card> Cards { get; set; }
     }
 }
