@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,7 @@ using VirtualLibrary.Persistence.Repositories;
 using VirtualLibrary.Persistence.Service;
 using VirtualLibrary.Persistence.UnitsOfWork;
 using static VirtualLibrary.Application.Features.Auth.Commands.SignInFeature;
+using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,7 +90,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-
+builder.Services.AddValidatorsFromAssemblyContaining<AddStudyRoomValidation>();
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
