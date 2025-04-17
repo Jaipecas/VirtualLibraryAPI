@@ -1,13 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VirtualLibrary.Domain.Common;
 using static VirtualLibrary.Application.Features.BoardFeatures.AddBoardFeature;
-using static VirtualLibrary.Application.Features.NotificationFeatures.AddNotificationFeature;
-using static VirtualLibrary.Application.Features.NotificationFeatures.DeleteNotificationFeature;
-using static VirtualLibrary.Application.Features.NotificationFeatures.Queries.GetNotificationsFeature;
 
-namespace VirtualLibraryAPI.Controllers.Features.NotificationFeatures
+namespace VirtualLibraryAPI.Controllers.Features.BoardFeatures
 {
     [Authorize]
     [Route("api/board")]
