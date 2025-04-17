@@ -1,8 +1,11 @@
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using VirtualLibrary.Application.Behaviors;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Application.Persistence.Repositories;
 using VirtualLibrary.Application.Persistence.Services;
@@ -12,6 +15,7 @@ using VirtualLibrary.Persistence.Repositories;
 using VirtualLibrary.Persistence.Service;
 using VirtualLibrary.Persistence.UnitsOfWork;
 using static VirtualLibrary.Application.Features.Auth.Commands.SignInFeature;
+using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<VirtualLibraryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//Esto de debe cambiar con lazy inyection
 builder.Services.AddScoped<IVirtualLibraryUnitOfWork, VirtualLibraryUnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -27,6 +32,10 @@ builder.Services.AddScoped<IStudyRoomRepository, StudyRoomRepository>();
 builder.Services.AddScoped<IStudyRoomUserRepository, StudyRoomUserRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IUserFriendRepository, UserFriendRepository>();
+
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<ICardListRepository, CardListRepository>();
+builder.Services.AddScoped<ICardRepository, CardRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<VirtualLibraryDbContext>()
@@ -85,6 +94,9 @@ builder.Services.AddCors(options =>
                   .AllowAnyHeader();
         });
 });
+
+builder.Services.AddValidatorsFromAssemblyContaining<AddStudyRoomValidation>();
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
 var app = builder.Build();
