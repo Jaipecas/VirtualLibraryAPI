@@ -16,5 +16,6 @@ namespace VirtualLibrary.Domain.BoardEntities
 
         private readonly ILazyLoader _lazyLoader;
         public Board(ILazyLoader lazyLoader) => _lazyLoader = lazyLoader;
+        public Board() { }
     }
 }
