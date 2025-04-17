@@ -5,6 +5,7 @@ using static VirtualLibrary.Application.Features.BoardFeatures.AddBoardFeature;
 using static VirtualLibrary.Application.Features.BoardFeatures.Commands.DeleteBoardFeature;
 using static VirtualLibrary.Application.Features.BoardFeatures.Commands.UpdateBoardFeature;
 using static VirtualLibrary.Application.Features.BoardFeatures.Queries.GetAllBoardsFeature;
+using static VirtualLibrary.Application.Features.BoardFeatures.Queries.GetBoardByIdFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.BoardFeatures
 {
@@ -56,6 +57,17 @@ namespace VirtualLibraryAPI.Controllers.Features.BoardFeatures
         public async Task<IActionResult> GetAllBoard()
         {
             var result = await _mediator.Send(new GetAllBoardsQuery());
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBoardById(int id)
+        {
+            var result = await _mediator.Send(new GetBoardByIdQuery { Id = id });
 
             if (!result.IsSuccess)
                 return BadRequest(new { result.Errors });

@@ -1,6 +1,5 @@
 ﻿
 using AutoMapper;
-using FluentValidation;
 using MediatR;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Domain.Common;
@@ -8,7 +7,7 @@ using static VirtualLibrary.Application.Features.BoardFeatures.Commands.DeleteBo
 
 namespace VirtualLibrary.Application.Features.BoardFeatures.Commands
 {
-    public class DeleteBoardFeature : IRequestHandler<DeleteBoardCommand, Result<bool>>
+    public partial class DeleteBoardFeature : IRequestHandler<DeleteBoardCommand, Result<bool>>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -30,21 +29,6 @@ namespace VirtualLibrary.Application.Features.BoardFeatures.Commands
             await _unitOfWork.SaveChanges();
 
             return Result<bool>.Success(true);
-        }
-
-        public class DeleteBoardCommand : IRequest<Result<bool>>
-        {
-            public int Id { get; set; }
-        }
-
-        public class DeleteBoardValidations : AbstractValidator<DeleteBoardCommand>
-        {
-            public DeleteBoardValidations()
-            {
-                {
-                    RuleFor(r => r.Id).NotEmpty().GreaterThan(0);
-                }
-            }
         }
     }
 }
