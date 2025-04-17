@@ -15,13 +15,16 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
 
         public IUserRepository Users { get; }
         public IStudyRoomRepository StudyRooms { get; }
-        public IStudyRoomUserRepository StudyRoomUser {  get; }
+        public IStudyRoomUserRepository StudyRoomUser { get; }
         public INotificationRepository Notifications { get; }
         public IUserFriendRepository UserFriends { get; }
+        public IBoardRepository Boards { get; }
+        public ICardListRepository CardLists { get; }
+        public ICardRepository Cards { get; }
 
         //TODO usar lazy inicialation
 
-        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms, IHttpContextAccessor httpContextAccessor, IStudyRoomUserRepository studyRoomUser, INotificationRepository notification, IUserFriendRepository userFriend)
+        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms, IHttpContextAccessor httpContextAccessor, IStudyRoomUserRepository studyRoomUser, INotificationRepository notification, IUserFriendRepository userFriend, IBoardRepository boards, ICardListRepository cardLists, ICardRepository cards)
         {
             _virtualLibraryDbContext = VirtualLibraryDbContext;
             _httpContextAccessor = httpContextAccessor;
@@ -30,6 +33,9 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
             StudyRoomUser = studyRoomUser;
             Notifications = notification;
             UserFriends = userFriend;
+            Boards = boards;
+            CardLists = cardLists;
+            Cards = cards;
         }
 
         public async Task<int> SaveChanges()
