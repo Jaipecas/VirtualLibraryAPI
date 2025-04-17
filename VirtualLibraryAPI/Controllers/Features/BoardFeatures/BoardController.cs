@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.BoardFeatures.AddBoardFeature;
+using static VirtualLibrary.Application.Features.BoardFeatures.Commands.UpdateBoardFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.BoardFeatures
 {
@@ -18,6 +19,17 @@ namespace VirtualLibraryAPI.Controllers.Features.BoardFeatures
 
         [HttpPost]
         public async Task<IActionResult> AddBoard(AddBoardCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(new { Board = result.Value });
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateBoard(UpdateBoardCommand command)
         {
             var result = await _mediator.Send(command);
 

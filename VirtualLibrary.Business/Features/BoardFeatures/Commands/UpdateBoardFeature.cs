@@ -25,7 +25,9 @@ namespace VirtualLibrary.Application.Features.BoardFeatures.Commands
 
             board.Title = request.Title!;
 
-            var result = _mapper.Map<UpdateBoardDto>(board);
+            await _unitOfWork.SaveChanges();
+
+            var result = _mapper.Map<UpdateBoardDto>(board);            
 
             return Result<UpdateBoardDto>.Success(result);
         }
