@@ -17,6 +17,7 @@ namespace VirtualLibrary.Application.Features.BoardFeatures.Commands
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
         public async Task<Result<UpdateBoardDto>> Handle(UpdateBoardCommand request, CancellationToken cancellationToken)
         {
             var board = await _unitOfWork.Boards.GetById(request.Id);

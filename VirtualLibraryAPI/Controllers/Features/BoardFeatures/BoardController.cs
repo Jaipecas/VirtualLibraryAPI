@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.BoardFeatures.AddBoardFeature;
+using static VirtualLibrary.Application.Features.BoardFeatures.Commands.DeleteBoardFeature;
 using static VirtualLibrary.Application.Features.BoardFeatures.Commands.UpdateBoardFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.BoardFeatures
@@ -37,6 +38,17 @@ namespace VirtualLibraryAPI.Controllers.Features.BoardFeatures
                 return BadRequest(new { result.Errors });
 
             return Ok(new { Board = result.Value });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteBoard([FromQuery] DeleteBoardCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
     }
 }
