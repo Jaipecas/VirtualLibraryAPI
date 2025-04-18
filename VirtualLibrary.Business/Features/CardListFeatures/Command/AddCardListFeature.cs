@@ -1,6 +1,5 @@
 ﻿
 using AutoMapper;
-using FluentValidation;
 using MediatR;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Domain.BoardEntities;
@@ -9,7 +8,7 @@ using static VirtualLibrary.Application.Features.CardListFeatures.Command.AddCar
 
 namespace VirtualLibrary.Application.Features.CardListFeatures.Command
 {
-    public class AddCardListFeature : IRequestHandler<AddCardListCommand, Result<AddCardListDto>>
+    public partial class AddCardListFeature : IRequestHandler<AddCardListCommand, Result<AddCardListDto>>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -31,39 +30,6 @@ namespace VirtualLibrary.Application.Features.CardListFeatures.Command
             var result = _mapper.Map<AddCardListDto>(cardList);
 
             return Result<AddCardListDto>.Success(result);
-        }
-
-        public class AddCardListCommand : IRequest<Result<AddCardListDto>>
-        {
-            public int BoardId { get; set; }
-            public string? Title { get; set; }
-        }
-
-        public class AddCardListDto
-        {
-            public required int Id { get; set; }
-            public required string Title { get; set; }
-            public required int BoardId { get; set; }
-        }
-
-        public class AddCardListValidations : AbstractValidator<AddCardListCommand>
-        {
-            public AddCardListValidations()
-            {
-                {
-                    RuleFor(r => r.BoardId).NotEmpty().GreaterThan(0);
-                    RuleFor(r => r.Title).NotEmpty();
-                }
-            }
-        }
-
-        public class AddCardListProfile : Profile
-        {
-            public AddCardListProfile()
-            {
-                CreateMap<AddCardListCommand, CardList>();
-                CreateMap<CardList, AddCardListDto>();
-            }
         }
     }
 }
