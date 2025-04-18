@@ -35,6 +35,7 @@ namespace VirtualLibrary.Application.Features.CardListFeatures.Command
 
         public class AddCardListCommand : IRequest<Result<AddCardListDto>>
         {
+            public int BoardId { get; set; }
             public string? Title { get; set; }
         }
 
@@ -42,6 +43,7 @@ namespace VirtualLibrary.Application.Features.CardListFeatures.Command
         {
             public required int Id { get; set; }
             public required string Title { get; set; }
+            public required int BoardId { get; set; }
         }
 
         public class AddCardListValidations : AbstractValidator<AddCardListCommand>
@@ -49,6 +51,7 @@ namespace VirtualLibrary.Application.Features.CardListFeatures.Command
             public AddCardListValidations()
             {
                 {
+                    RuleFor(r => r.BoardId).NotEmpty().GreaterThan(0);
                     RuleFor(r => r.Title).NotEmpty();
                 }
             }
