@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.CardFeatures.Commands.AddCardFeature;
+using static VirtualLibrary.Application.Features.CardFeatures.Commands.UpdateCardFeature;
+using static VirtualLibrary.Application.Features.CardListFeatures.Command.UpdateCardListFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.CardFeature
 {
@@ -18,6 +20,17 @@ namespace VirtualLibraryAPI.Controllers.Features.CardFeature
 
         [HttpPost]
         public async Task<IActionResult> AddCard(AddCardCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(new { Board = result.Value });
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCard(UpdateCardCommand command)
         {
             var result = await _mediator.Send(command);
 

@@ -17,8 +17,4 @@
     <ProjectReference Include="..\VirtualLibrary.Domain\VirtualLibrary.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\CardListFeatures\Queries\" />
-  </ItemGroup>
-
 </Project>
