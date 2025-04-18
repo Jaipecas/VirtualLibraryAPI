@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static VirtualLibrary.Application.Features.CardFeatures.Commands.AddCardFeature;
+using static VirtualLibrary.Application.Features.CardFeatures.Commands.DeleteCardFeature;
 using static VirtualLibrary.Application.Features.CardFeatures.Commands.UpdateCardFeature;
-using static VirtualLibrary.Application.Features.CardListFeatures.Command.UpdateCardListFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.CardFeature
 {
@@ -38,6 +38,17 @@ namespace VirtualLibraryAPI.Controllers.Features.CardFeature
                 return BadRequest(new { result.Errors });
 
             return Ok(new { Board = result.Value });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCard([FromQuery] DeleteCardCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
     }
 }
