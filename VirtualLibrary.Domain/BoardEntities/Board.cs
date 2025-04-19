@@ -6,6 +6,8 @@ namespace VirtualLibrary.Domain.BoardEntities
     public class Board : GenericEntity
     {
         public required string Title { get; set; }
+        public required string UserId { get; set; }
+        public User? User;
 
         private List<CardList>? _cardLists;
         public List<CardList>? CardLists

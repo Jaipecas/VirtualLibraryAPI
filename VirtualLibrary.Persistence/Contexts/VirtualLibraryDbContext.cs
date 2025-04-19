@@ -34,6 +34,7 @@ namespace VirtualLibrary.Persistence.Contexts
 
             //boards
             builder.Entity<Board>().HasMany(x => x.CardLists).WithOne().HasForeignKey(x => x.BoardId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Board>().HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<CardList>().HasMany(x => x.Cards).WithOne().HasForeignKey(x => x.CardListId).OnDelete(DeleteBehavior.Cascade);
 
 
