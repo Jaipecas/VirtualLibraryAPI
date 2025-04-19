@@ -54,9 +54,9 @@ namespace VirtualLibraryAPI.Controllers.Features.BoardFeatures
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllBoard()
+        public async Task<IActionResult> GetAllBoard([FromQuery] GetAllBoardsQuery query)
         {
-            var result = await _mediator.Send(new GetAllBoardsQuery());
+            var result = await _mediator.Send(query);
 
             if (!result.IsSuccess)
                 return BadRequest(new { result.Errors });
