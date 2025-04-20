@@ -27,7 +27,7 @@ namespace VirtualLibraryAPI.Controllers.Features.CardListFeature
             if (!result.IsSuccess)
                 return BadRequest(new { result.Errors });
 
-            return Ok(new { Board = result.Value });
+            return Ok(result.Value);
         }
 
         [HttpPut]
@@ -38,7 +38,7 @@ namespace VirtualLibraryAPI.Controllers.Features.CardListFeature
             if (!result.IsSuccess)
                 return BadRequest(new { result.Errors });
 
-            return Ok(new { Board = result.Value });
+            return Ok(result.Value);
         }
 
         [HttpDelete]

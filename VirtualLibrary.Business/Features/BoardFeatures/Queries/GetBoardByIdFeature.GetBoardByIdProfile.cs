@@ -10,7 +10,13 @@ namespace VirtualLibrary.Application.Features.BoardFeatures.Queries
         {
             public GetBoardByIdProfile()
             {
-                CreateMap<Board, GetBoardByIdDto>();
+                CreateMap<Board, GetBoardByIdDto>()
+                     .ForMember(dest => dest.CardLists, opt => opt.MapFrom(src => src.CardLists));
+
+                CreateMap<CardList, GetBoardByIdCardListDto>()
+                    .ForMember(dest => dest.Cards, opt => opt.MapFrom(src => src.Cards)); 
+
+                CreateMap<Card, GetBoardByIdCardDto>();
             }
         }
 
