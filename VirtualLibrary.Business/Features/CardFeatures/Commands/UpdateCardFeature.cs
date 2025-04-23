@@ -24,13 +24,13 @@ namespace VirtualLibrary.Application.Features.CardFeatures.Commands
 
             if (card == null) return Result<UpdateCardDto>.Failure($"La card no existe con id {request.Id}");
 
-            var cardList = await _unitOfWork.CardLists.GetById(request.CardListId);
+            var cardList = await _unitOfWork.CardLists.GetById(card.CardListId);
 
             if (cardList == null) return Result<UpdateCardDto>.Failure($"La card list no existe con id {request.CardListId}");
 
-            card.Title = request.Title!;
-            card.CardListId = request.CardListId;
-            card.IsComplete = request.IsComplete;
+            card.Title = request.Title ?? card.Title;
+            card.CardListId = request.CardListId ?? card.CardListId;
+            card.IsComplete = request.IsComplete ?? card.IsComplete;
 
             await _unitOfWork.SaveChanges();
 

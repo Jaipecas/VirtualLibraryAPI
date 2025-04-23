@@ -9,9 +9,9 @@ namespace VirtualLibrary.Application.Features.CardFeatures.Commands
         public class UpdateCardCommand : IRequest<Result<UpdateCardDto>>
         {
             public int Id { get; set; }
-            public int CardListId { get; set; }
+            public int? CardListId { get; set; }
             public string? Title { get; set; }
-            public bool IsComplete { get; set; }
+            public bool? IsComplete { get; set; }
         }
     }
 }

@@ -21,6 +21,7 @@
         {
             public required int Id { get; set; }
             public required string Title { get; set; }
+            public required bool IsComplete { get; set; }
         }
 
     }
