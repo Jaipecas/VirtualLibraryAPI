@@ -10,8 +10,6 @@ namespace VirtualLibrary.Application.Features.CardFeatures.Commands
             {
                 {
                     RuleFor(r => r.Id).NotEmpty().GreaterThan(0);
-                    RuleFor(r => r.CardListId).NotEmpty().GreaterThan(0);
-                    RuleFor(r => r.Title).NotEmpty();
                 }
             }
         }
