@@ -22,7 +22,12 @@ namespace VirtualLibraryAPI.Controllers.Features.Auth
         [HttpPost("signUp")]
         public async Task<IActionResult> SignUp(SignUpCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpPost("signIn")]
