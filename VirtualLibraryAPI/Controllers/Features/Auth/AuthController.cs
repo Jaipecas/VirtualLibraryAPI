@@ -34,7 +34,12 @@ namespace VirtualLibraryAPI.Controllers.Features.Auth
         [HttpPost("logout")]
         public async Task<IActionResult> Logout(LogoutCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [Authorize]
