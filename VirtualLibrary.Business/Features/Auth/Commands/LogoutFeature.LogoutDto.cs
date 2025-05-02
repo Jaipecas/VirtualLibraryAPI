@@ -2,7 +2,7 @@
 {
     public partial class LogoutFeature
     {
-        public partial class LogoutDto
+        public class LogoutDto
         {
             public required string Message { get; set; }
         }
