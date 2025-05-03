@@ -41,6 +41,7 @@ namespace VirtualLibraryAPI.Controllers.Features.Auth
             return Ok(result.Value);
         }
 
+        [Authorize]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout(LogoutCommand command)
         {
@@ -56,7 +57,12 @@ namespace VirtualLibraryAPI.Controllers.Features.Auth
         [HttpPost("updateUser")]
         public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
     }
 }

@@ -28,6 +28,10 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
             {
                 var user = new User { UserName = request.UserName, Email = request.Email };
 
+                var userEmail = await _virtualLibraryUnitOfWork.Users.FindByEmailAsync(user.Email);
+
+                if (userEmail != null) return Result<SignUpDto>.Failure("Email already exist");
+
                 var identityResult = await _virtualLibraryUnitOfWork.Users.CreateAsync(user, request.Password);
 
                 if (!identityResult.Succeeded) return Result<SignUpDto>.Failure(identityResult.Errors.Select(e => e.Description).ToList());

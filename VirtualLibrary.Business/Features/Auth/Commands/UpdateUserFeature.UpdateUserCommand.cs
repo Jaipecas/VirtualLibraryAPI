@@ -1,12 +1,13 @@
 ﻿
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using VirtualLibrary.Domain.Common;
 
 namespace VirtualLibrary.Application.Features.Auth.Commands
 {
     public partial class UpdateUserFeature
     {
-        public class UpdateUserCommand : IRequest<IActionResult>
+        public class UpdateUserCommand : IRequest<Result<UpdateUserDto>>
         {
             public required string CurrentUserName { get; set; }
             public required string CurrentEmail { get; set; }

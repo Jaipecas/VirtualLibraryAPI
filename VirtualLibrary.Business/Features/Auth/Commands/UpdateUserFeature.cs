@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Domain;
+using VirtualLibrary.Domain.Common;
 
 namespace VirtualLibrary.Application.Features.Auth.Commands
 {
     public partial class UpdateUserFeature
     {
-        public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, IActionResult>
+        public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, Result<UpdateUserDto>>
         {
             private readonly IVirtualLibraryUnitOfWork _virtualLibraryUnitOfWork;
             private readonly IMapper _mapper;
@@ -22,17 +22,17 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
                 _passwordHasher = passwordHasher;
             }
 
-            public async Task<IActionResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+            public async Task<Result<UpdateUserDto>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
                 var user = await _virtualLibraryUnitOfWork.Users.FindByEmailAsync(request.CurrentEmail);
 
-                if (user == null) return new UnauthorizedObjectResult(new { errorMessage = "Invalid user" });
+                if (user == null) return Result<UpdateUserDto>.Failure("Invalid user");
 
                 if (!string.IsNullOrEmpty(request.NewEmail))
                 {
                     var newUser = await _virtualLibraryUnitOfWork.Users.FindByEmailAsync(request.NewEmail);
 
-                    if (newUser != null && request.NewEmail != user.Email) return new BadRequestObjectResult(new { errorMessage = "Email ya existe" });
+                    if (newUser != null && request.NewEmail != user.Email) return Result<UpdateUserDto>.Failure("Email ya existe");
 
                     user.Email = request.NewEmail;
                 }
@@ -41,7 +41,7 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
                 {
                     var newUserName = await _virtualLibraryUnitOfWork.Users.FindByNameAsync(request.NewUserName);
 
-                    if (newUserName != null && request.NewUserName != user.UserName) return new BadRequestObjectResult(new { errorMessage = "UserName ya existe" });
+                    if (newUserName != null && request.NewUserName != user.UserName) return Result<UpdateUserDto>.Failure("UserName ya existe");
 
                     user.UserName = request.NewUserName;
                 }
@@ -52,11 +52,11 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
 
                 var updateResult = await _virtualLibraryUnitOfWork.Users.UpdateAsync(user);
 
-                if (!updateResult.Succeeded) return new BadRequestObjectResult(new { errorMessage = "Usuario no actualizado" });
+                if (!updateResult.Succeeded) return Result<UpdateUserDto>.Failure("Usuario no actualizado");
 
                 var result = _mapper.Map<UpdateUserDto>(user);
 
-                return new OkObjectResult(result);
+                return Result<UpdateUserDto>.Success(result);
             }
         }
     }
