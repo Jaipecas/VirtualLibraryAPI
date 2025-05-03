@@ -22,26 +22,47 @@ namespace VirtualLibraryAPI.Controllers.Features.Auth
         [HttpPost("signUp")]
         public async Task<IActionResult> SignUp(SignUpCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpPost("signIn")]
         public async Task<IActionResult> SignIn(SignInCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
+        [Authorize]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout(LogoutCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [Authorize]
         [HttpPost("updateUser")]
         public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
         {
-            return await _mediator.Send(command);            
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
     }
 }

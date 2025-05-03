@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static VirtualLibrary.Application.Features.NotificationFeatures.AddNotificationFeature;
 using static VirtualLibrary.Application.Features.NotificationFeatures.DeleteNotificationFeature;
 using static VirtualLibrary.Application.Features.NotificationFeatures.Queries.GetNotificationsFeature;
@@ -21,19 +22,34 @@ namespace VirtualLibraryAPI.Controllers.Features.NotificationFeatures
         [HttpPost]
         public async Task<IActionResult> AddNotification(AddNotificationCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteNotification([FromQuery] DeleteNotificationCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetNotifications([FromQuery] GetNoticationsQuery query)
         {
-            return await _mediator.Send(query);
+            var result = await _mediator.Send(query);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
     }
 }
