@@ -21,7 +21,12 @@ namespace VirtualLibraryAPI.Controllers.Features.NotificationFeatures
         [HttpPost]
         public async Task<IActionResult> AddNotification(AddNotificationCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpDelete]

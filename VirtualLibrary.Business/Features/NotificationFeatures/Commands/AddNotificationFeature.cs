@@ -3,13 +3,14 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
+using VirtualLibrary.Domain.Common;
 using VirtualLibrary.Domain.Constants;
 using VirtualLibrary.Domain.StudyRoomEntities;
 using static VirtualLibrary.Application.Features.NotificationFeatures.AddNotificationFeature;
 
 namespace VirtualLibrary.Application.Features.NotificationFeatures
 {
-    public partial class AddNotificationFeature : IRequestHandler<AddNotificationCommand, IActionResult>
+    public partial class AddNotificationFeature : IRequestHandler<AddNotificationCommand, Result<AddNotificationDto>>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,17 +21,17 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Handle(AddNotificationCommand request, CancellationToken cancellationToken)
+        public async Task<Result<AddNotificationDto>> Handle(AddNotificationCommand request, CancellationToken cancellationToken)
         {
             var sender = await _unitOfWork.Users.FindByIdAsync(request.SenderId);
 
-            if (sender == null) return new NotFoundObjectResult(new { ErrorMessage = "Emisario no existe" });
+            if (sender == null) return Result<AddNotificationDto>.Failure("Emisario no existe");
 
-            if (sender.UserName == request.RecipientName) return new BadRequestObjectResult(new { ErrorMessage = "No puedes enviarte notificaciones a ti mismo" });
+            if (sender.UserName == request.RecipientName) return Result<AddNotificationDto>.Failure("No puedes enviarte notificaciones a ti mismo");
 
             var recipient = await _unitOfWork.Users.FindByNameAsync(request.RecipientName);
 
-            if (recipient == null) return new NotFoundObjectResult(new { ErrorMessage = "Receptor no existe" });
+            if (recipient == null) return Result<AddNotificationDto>.Failure("Receptor no existe");
 
             Notification notification;
 
@@ -45,12 +46,12 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
 
                     var isFriend = sender.UserFriends.Any(friend => friend.FriendId == recipient.Id);
 
-                    if (isFriend) return new BadRequestObjectResult(new { ErrorMessage = "Ya tienes agregado como amigos a este usuario" });
+                    if (isFriend) return Result<AddNotificationDto>.Failure("Ya tienes agregado como amigos a este usuario");
 
                     notification.RecipientId = recipient.Id;
                     break;
                 default:
-                    return new BadRequestObjectResult(new { ErrorMessage = "EL tipo de notificación indicado no existe" });
+                    return Result<AddNotificationDto>.Failure("EL tipo de notificación indicado no existe");
             }
 
             await _unitOfWork.Notifications.Add(notification);
@@ -59,7 +60,7 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
 
             var result = _mapper.Map<AddNotificationDto>(notification);
 
-            return new OkObjectResult(result);
+            return Result<AddNotificationDto>.Success(result);
         }
     }
 }
