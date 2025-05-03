@@ -3,6 +3,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
+using VirtualLibrary.Domain.Common;
 using VirtualLibrary.Domain.Constants;
 using VirtualLibrary.Domain.StudyRoomEntities;
 using VirtualLibrary.Domain.UserEntities;
@@ -10,7 +11,7 @@ using static VirtualLibrary.Application.Features.NotificationFeatures.DeleteNoti
 
 namespace VirtualLibrary.Application.Features.NotificationFeatures
 {
-    public partial class DeleteNotificationFeature : IRequestHandler<DeleteNotificationCommand, IActionResult>
+    public partial class DeleteNotificationFeature : IRequestHandler<DeleteNotificationCommand, Result<DeleteNotificationDto>>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -30,11 +31,11 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
             }
         }
 
-        public async Task<IActionResult> Handle(DeleteNotificationCommand request, CancellationToken cancellationToken)
+        public async Task<Result<DeleteNotificationDto>> Handle(DeleteNotificationCommand request, CancellationToken cancellationToken)
         {
             var notification = await _unitOfWork.Notifications.GetById(request.Id);
 
-            if (notification == null) return new NotFoundObjectResult(new { ErrorMessage = "No se encuentra la notificación" });
+            if (notification == null) return Result<DeleteNotificationDto>.Failure("No se encuentra la notificación");
 
             switch (request.NotificationType)
             {
@@ -67,14 +68,14 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
                     }
                     break;
                 default:
-                    return new BadRequestObjectResult(new { ErrorMessage = "EL tipo de notificación indicado no existe" });
+                    return Result<DeleteNotificationDto>.Failure("EL tipo de notificación indicado no existe");
             }
 
             await _unitOfWork.Notifications.Delete(notification.Id);
 
             await _unitOfWork.SaveChanges();
 
-            return new OkObjectResult(true);
+            return Result<DeleteNotificationDto>.Success(new DeleteNotificationDto { IsDeleted = true });
         }
     }
 }

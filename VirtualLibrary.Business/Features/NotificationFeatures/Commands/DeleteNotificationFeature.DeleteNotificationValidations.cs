@@ -9,7 +9,6 @@ namespace VirtualLibrary.Application.Features.NotificationFeatures
            public DeleteNotificationValidations()
             {
                 RuleFor(r => r.Id).NotEmpty();
-                RuleFor(r => r.IsAccepted).NotEmpty();
             }
         }
     }

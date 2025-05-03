@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using VirtualLibrary.Domain.Common;
 
 namespace VirtualLibrary.Application.Features.NotificationFeatures
 {
     public partial class DeleteNotificationFeature
     {
-        public class DeleteNotificationCommand : IRequest<IActionResult>
+        public class DeleteNotificationCommand : IRequest<Result<DeleteNotificationDto>>
         {
             public required int Id { get; set; }
             public required bool IsAccepted { get; set; }
