@@ -22,7 +22,7 @@ namespace VirtualLibrary.Application.Features.BoardFeatures.Queries
         {
             var boards = await _unitOfWork.Boards.GetAllUserBoards(request.UserId!);
 
-            if (boards.Count == 0) return Result<List<GetAllBoardsDto>>.Failure("No existe boards para el usuario");
+            if (boards.Count == 0) return Result<List<GetAllBoardsDto>>.Success([]);
 
             var result = _mapper.Map<List<GetAllBoardsDto>>(boards);
 
