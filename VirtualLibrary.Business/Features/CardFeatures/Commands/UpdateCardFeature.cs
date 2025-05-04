@@ -31,6 +31,7 @@ namespace VirtualLibrary.Application.Features.CardFeatures.Commands
             card.Title = request.Title ?? card.Title;
             card.CardListId = request.CardListId ?? card.CardListId;
             card.IsComplete = request.IsComplete ?? card.IsComplete;
+            card.Order = request.Order ?? card.Order;
 
             await _unitOfWork.SaveChanges();
 

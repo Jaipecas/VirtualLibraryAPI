@@ -40,8 +40,7 @@ namespace VirtualLibraryAPI.Controllers.Features.Auth
 
             return Ok(result.Value);
         }
-
-        [Authorize]
+   
         [HttpPost("logout")]
         public async Task<IActionResult> Logout(LogoutCommand command)
         {

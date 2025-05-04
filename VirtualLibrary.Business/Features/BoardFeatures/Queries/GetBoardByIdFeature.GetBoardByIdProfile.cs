@@ -14,7 +14,7 @@ namespace VirtualLibrary.Application.Features.BoardFeatures.Queries
                      .ForMember(dest => dest.CardLists, opt => opt.MapFrom(src => src.CardLists));
 
                 CreateMap<CardList, GetBoardByIdCardListDto>()
-                    .ForMember(dest => dest.Cards, opt => opt.MapFrom(src => src.Cards)); 
+                    .ForMember(dest => dest.Cards, opt => opt.MapFrom(src => src.Cards!.OrderBy(c => c.Order))); 
 
                 CreateMap<Card, GetBoardByIdCardDto>();
             }

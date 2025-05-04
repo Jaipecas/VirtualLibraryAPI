@@ -12,6 +12,7 @@ namespace VirtualLibrary.Application.Features.CardFeatures.Commands
             public int? CardListId { get; set; }
             public string? Title { get; set; }
             public bool? IsComplete { get; set; }
+            public int? Order {  get; set; }
         }
     }
 }
