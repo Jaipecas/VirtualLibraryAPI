@@ -25,6 +25,7 @@ namespace VirtualLibrary.Domain.StudyRoomEntities
 
         public bool? IsAccepted { get; set; }
         public bool? IsConnected { get; set; } = false;
+        public string? ConnectionId { get; set; }
 
         public StudyRoomUser(ILazyLoader lazyLoader) => _lazyLoader = lazyLoader;
         public StudyRoomUser() { }
