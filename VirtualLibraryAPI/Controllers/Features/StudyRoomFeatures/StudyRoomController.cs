@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.DeleteStudyRoomFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.UpdateRoomTimerFeature;
