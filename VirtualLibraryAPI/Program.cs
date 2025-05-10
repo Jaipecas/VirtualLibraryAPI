@@ -24,18 +24,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<VirtualLibraryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//Esto de debe cambiar con lazy inyection
 builder.Services.AddScoped<IVirtualLibraryUnitOfWork, VirtualLibraryUnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IStudyRoomRepository, StudyRoomRepository>();
-builder.Services.AddScoped<IStudyRoomUserRepository, StudyRoomUserRepository>();
-builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-builder.Services.AddScoped<IUserFriendRepository, UserFriendRepository>();
-
-builder.Services.AddScoped<IBoardRepository, BoardRepository>();
-builder.Services.AddScoped<ICardListRepository, CardListRepository>();
-builder.Services.AddScoped<ICardRepository, CardRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<VirtualLibraryDbContext>()
