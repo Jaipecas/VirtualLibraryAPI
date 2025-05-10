@@ -73,7 +73,12 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
         [HttpPut("updateRoomTimer")]
         public async Task<IActionResult> UpdateRoomTimer(UpdateRoomTimerCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
     }
 }
