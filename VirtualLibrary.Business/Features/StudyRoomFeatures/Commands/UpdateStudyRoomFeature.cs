@@ -2,13 +2,14 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
+using VirtualLibrary.Domain.Common;
 using VirtualLibrary.Domain.Constants;
 using VirtualLibrary.Domain.StudyRoomEntities;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.UpdateStudyRoomFeature;
 
 namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 {
-    public partial class UpdateStudyRoomFeature : IRequestHandler<UpdateStudyRoomCommand, IActionResult>
+    public partial class UpdateStudyRoomFeature : IRequestHandler<UpdateStudyRoomCommand, Result<UpdateStudyRoomDto>>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -18,11 +19,11 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<IActionResult> Handle(UpdateStudyRoomCommand request, CancellationToken cancellationToken)
+        public async Task<Result<UpdateStudyRoomDto>> Handle(UpdateStudyRoomCommand request, CancellationToken cancellationToken)
         {
             var studyRoom = await _unitOfWork.StudyRooms.GetById(request.Id);
 
-            if (studyRoom == null) return new NotFoundObjectResult(new { errorMessage = "No se ha encontrado la sala" });
+            if (studyRoom == null) return Result<UpdateStudyRoomDto>.Failure("No se ha encontrado la sala");
 
             _mapper.Map(request, studyRoom);
 
@@ -30,7 +31,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
             {
                 var users = await _unitOfWork.Users.GetUsersAsync(request.UsersIds);
 
-                if (users == null) return new NotFoundObjectResult(new { errorMessage = "No se han encontrado los usuarios" });
+                if (users == null) return Result<UpdateStudyRoomDto>.Failure("No se han encontrado los usuarios");
 
                 var roomUsersIds = studyRoom?.StudyRoomUsers?.Select(su => su.UserId).ToList();
 
@@ -61,7 +62,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             var result = _mapper.Map<UpdateStudyRoomDto>(studyRoom);
 
-            return new OkObjectResult(result);
+            return Result<UpdateStudyRoomDto>.Success(result);
         }
 
     }

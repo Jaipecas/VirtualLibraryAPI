@@ -49,7 +49,12 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
         [HttpPut()]
         public async Task<IActionResult> UpdateStudyRoom(UpdateStudyRoomCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpGet("getStudyRoomsByOwner")]
