@@ -27,7 +27,12 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
         [HttpPost()]
         public async Task<IActionResult> AddStudyRoom(AddStudyRoomCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpDelete()]
