@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static VirtualLibrary.Application.Features.UserFeatures.Queries.GetUserDataByIdFeature;
 
 namespace VirtualLibraryAPI.Controllers.Features.UserFeatures
@@ -20,7 +21,12 @@ namespace VirtualLibraryAPI.Controllers.Features.UserFeatures
         [HttpGet()]
         public async Task<IActionResult> GetUserById([FromQuery] GetUserDataByIdQuery request)
         {
-            return await _mediator.Send(request);
+            var result = await _mediator.Send(request);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
     }
 }

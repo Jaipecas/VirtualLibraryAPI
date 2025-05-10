@@ -22,7 +22,7 @@ namespace VirtualLibrary.Application.Features.BoardFeatures.Commands
         {
             var board = await _unitOfWork.Boards.GetById(request.Id);
 
-            if (board == null) Result<bool>.Failure($"No existe un board con id: {request.Id}");
+            if (board == null) return Result<bool>.Failure($"No existe un board con id: {request.Id}");
 
             await _unitOfWork.Boards.Delete(board!.Id);
 

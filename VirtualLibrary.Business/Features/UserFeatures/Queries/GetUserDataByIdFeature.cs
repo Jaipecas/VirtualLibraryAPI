@@ -1,13 +1,13 @@
 ﻿
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
+using VirtualLibrary.Domain.Common;
 using static VirtualLibrary.Application.Features.UserFeatures.Queries.GetUserDataByIdFeature;
 
 namespace VirtualLibrary.Application.Features.UserFeatures.Queries
 {
-    public partial class GetUserDataByIdFeature : IRequestHandler<GetUserDataByIdQuery, IActionResult>
+    public partial class GetUserDataByIdFeature : IRequestHandler<GetUserDataByIdQuery, Result<GetUserDataByIdDto>>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -18,15 +18,15 @@ namespace VirtualLibrary.Application.Features.UserFeatures.Queries
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Handle(GetUserDataByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<GetUserDataByIdDto>> Handle(GetUserDataByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.Users.FindByIdAsync(request.UserId);
 
-            if (user == null) return new NotFoundObjectResult(new { errorMessage = "No se ha encontrado el usuario" });
+            if (user == null) return Result<GetUserDataByIdDto>.Failure("No se ha encontrado el usuario");
 
             var result = _mapper.Map<GetUserDataByIdDto>(user);
 
-            return new OkObjectResult(result);
+            return Result<GetUserDataByIdDto>.Success(result);
         }
     }
 }

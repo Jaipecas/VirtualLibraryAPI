@@ -27,43 +27,78 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
         [HttpPost()]
         public async Task<IActionResult> AddStudyRoom(AddStudyRoomCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpDelete()]
         public async Task<IActionResult> DeleteStudyRoom([FromQuery] DeleteStudyRoomCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpPut()]
         public async Task<IActionResult> UpdateStudyRoom(UpdateStudyRoomCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpGet("getStudyRoomsByOwner")]
         public async Task<IActionResult> GetStudyRoomsByOwner([FromQuery] GetStudyRoomsByOwnerQuery request)
         {
-            return await _mediator.Send(request);
+            var result = await _mediator.Send(request);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpGet("getInvitedStudyRooms")]
         public async Task<IActionResult> GetStudyRoomsByUser([FromQuery] GetInvitedStudyRoomsQuery request)
         {
-            return await _mediator.Send(request);
+            var result = await _mediator.Send(request);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpGet("getStudyRoomById")]
         public async Task<IActionResult> GetStudyRoomById([FromQuery] GetStudyRoomByIdQuery request)
         {
-            return await _mediator.Send(request);
+            var result = await _mediator.Send(request);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpPut("updateRoomTimer")]
         public async Task<IActionResult> UpdateRoomTimer(UpdateRoomTimerCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
     }
 }

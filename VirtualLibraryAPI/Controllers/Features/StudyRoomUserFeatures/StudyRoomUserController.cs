@@ -10,7 +10,7 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomUserFeatures
     [Authorize]
     [Route("api/studyroomuser")]
     [ApiController]
-    public class StudyRoomUserController
+    public class StudyRoomUserController : ControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -22,12 +22,22 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomUserFeatures
         [HttpPut()]
         public async Task<IActionResult> UpdateStudyRoomUser(UpdateStudyRoomUserCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
         [HttpGet()]
         public async Task<IActionResult> GetRoomUsers([FromQuery] GetRoomUsersQuery request)
         {
-            return await _mediator.Send(request);
+            var result = await _mediator.Send(request);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
     }
 }

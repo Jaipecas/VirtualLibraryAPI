@@ -18,7 +18,6 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
             {
                 public AddStudyRoomPomodoroValidation()
                 {
-                    RuleFor(r => r.Name).NotEmpty();
                     RuleFor(r => r.PomodoroTime).NotEmpty();
                     RuleFor(r => r.BreakTime).NotEmpty();
                 }

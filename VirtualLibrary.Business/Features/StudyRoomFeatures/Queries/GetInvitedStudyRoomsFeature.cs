@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
+using VirtualLibrary.Domain.Common;
 using VirtualLibrary.Domain.StudyRoomEntities;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Queries.GetInvitedStudyRoomsFeature;
 
 namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Queries
 {
-    public partial class GetInvitedStudyRoomsFeature : IRequestHandler<GetInvitedStudyRoomsQuery, IActionResult>
+    public partial class GetInvitedStudyRoomsFeature : IRequestHandler<GetInvitedStudyRoomsQuery, Result<List<GetInvitedStudyRoomsDto>>>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -18,11 +18,11 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Queries
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Handle(GetInvitedStudyRoomsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<GetInvitedStudyRoomsDto>>> Handle(GetInvitedStudyRoomsQuery request, CancellationToken cancellationToken)
         {
             var roomsUser = await _unitOfWork.StudyRoomUser.GetRoomsByUser(request.UserId);
 
-            if (roomsUser == null) return new NotFoundObjectResult(new { errorMessage = "No se han encontrado salas" });
+            if (roomsUser == null) return Result<List<GetInvitedStudyRoomsDto>>.Failure("No se han encontrado salas");
 
             List<StudyRoom> rooms = [];
 
@@ -30,7 +30,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Queries
 
             var result = _mapper.Map<List<GetInvitedStudyRoomsDto>>(rooms);
 
-            return new OkObjectResult(result);
+            return Result<List<GetInvitedStudyRoomsDto>>.Success(result);
         }
     }
 }

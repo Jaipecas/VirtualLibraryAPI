@@ -1,25 +1,25 @@
 ﻿
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using VirtualLibrary.Domain.Common;
 
 namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 {
     public partial class AddStudyRoomFeature
     {
-        public class AddStudyRoomCommand : IRequest<IActionResult>
+        public class AddStudyRoomCommand : IRequest<Result<AddStudyRoomDto>>
         {
-            public required string Name { get; set; }
-            public required string Description { get; set; }
+            public string? Name { get; set; }
+            public string? Description { get; set; }
             public List<string>? UsersIds { get; set; }
-            public required PomodoroCommand Pomodoro { get; set; }
-            public required string OwnerId { get; set; }
+            public PomodoroCommand? Pomodoro { get; set; }
+            public string? OwnerId { get; set; }
         }
 
         public class PomodoroCommand
         {
-            public required string Name { get; set; }
-            public required int PomodoroTime { get; set; }
-            public required int BreakTime { get; set; }
+            public string? Name { get; set; }
+            public int? PomodoroTime { get; set; }
+            public int? BreakTime { get; set; }
         }
     }
 }
