@@ -14,7 +14,6 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
         private readonly VirtualLibraryDbContext _virtualLibraryDbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private IUserRepository? _users;
         private IStudyRoomRepository? _studyRooms;
         private IStudyRoomUserRepository? _studyRoomUser;
         private INotificationRepository? _notifications;
