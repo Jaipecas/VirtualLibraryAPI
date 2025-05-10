@@ -21,7 +21,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
         }
         public async Task<Result<UpdateStudyRoomDto>> Handle(UpdateStudyRoomCommand request, CancellationToken cancellationToken)
         {
-            var studyRoom = await _unitOfWork.StudyRooms.GetById(request.Id);
+            var studyRoom = await _unitOfWork.StudyRooms.GetById((int)request.Id!);
 
             if (studyRoom == null) return Result<UpdateStudyRoomDto>.Failure("No se ha encontrado la sala");
 

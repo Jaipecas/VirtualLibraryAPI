@@ -11,15 +11,15 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
                 RuleFor(r => r.Id).NotEmpty();
                 RuleFor(r => r.Name).NotEmpty();
                 RuleFor(r => r.Description).NotEmpty();
-                RuleFor(r => r.UsersIds).NotEmpty();
-                RuleFor(r => r.Pomodoro).NotEmpty().SetValidator(new UpdateStudyRoomPomodoroValidation());
+                RuleFor(r => r.Pomodoro).NotEmpty()
+                    .SetValidator(new UpdateStudyRoomPomodoroValidation())
+                    .When(r => r.Pomodoro != null);
             }
 
             public class UpdateStudyRoomPomodoroValidation : AbstractValidator<PomodoroUpdateCommand>
             {
                 public UpdateStudyRoomPomodoroValidation()
                 {
-                    RuleFor(r => r.Name).NotEmpty();
                     RuleFor(r => r.PomodoroTime).NotEmpty();
                     RuleFor(r => r.BreakTime).NotEmpty();
                 }
