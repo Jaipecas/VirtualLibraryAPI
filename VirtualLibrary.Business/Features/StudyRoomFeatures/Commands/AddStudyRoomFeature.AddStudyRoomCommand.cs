@@ -1,12 +1,12 @@
 ﻿
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using VirtualLibrary.Domain.Common;
 
 namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 {
     public partial class AddStudyRoomFeature
     {
-        public class AddStudyRoomCommand : IRequest<IActionResult>
+        public class AddStudyRoomCommand : IRequest<Result<AddStudyRoomDto>>
         {
             public required string Name { get; set; }
             public required string Description { get; set; }
