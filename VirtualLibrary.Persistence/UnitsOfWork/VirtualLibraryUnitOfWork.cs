@@ -5,6 +5,7 @@ using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Application.Persistence.Repositories;
 using VirtualLibrary.Domain;
 using VirtualLibrary.Persistence.Contexts;
+using VirtualLibrary.Persistence.Repositories;
 
 namespace VirtualLibrary.Persistence.UnitsOfWork
 {
@@ -13,29 +14,29 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
         private readonly VirtualLibraryDbContext _virtualLibraryDbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        private IUserRepository? _users;
+        private IStudyRoomRepository? _studyRooms;
+        private IStudyRoomUserRepository? _studyRoomUser;
+        private INotificationRepository? _notifications;
+        private IUserFriendRepository? _userFriends;
+        private IBoardRepository? _boards;
+        private ICardListRepository? _cardLists;
+        private ICardRepository? _cards;
+
         public IUserRepository Users { get; }
-        public IStudyRoomRepository StudyRooms { get; }
-        public IStudyRoomUserRepository StudyRoomUser { get; }
-        public INotificationRepository Notifications { get; }
-        public IUserFriendRepository UserFriends { get; }
-        public IBoardRepository Boards { get; }
-        public ICardListRepository CardLists { get; }
-        public ICardRepository Cards { get; }
+        public IStudyRoomRepository StudyRooms => _studyRooms ??= new StudyRoomRepository(_virtualLibraryDbContext);
+        public IStudyRoomUserRepository StudyRoomUser => _studyRoomUser ??= new StudyRoomUserRepository(_virtualLibraryDbContext);
+        public INotificationRepository Notifications => _notifications ??= new NotificationRepository(_virtualLibraryDbContext);
+        public IUserFriendRepository UserFriends => _userFriends ??= new UserFriendRepository(_virtualLibraryDbContext);
+        public IBoardRepository Boards => _boards ??= new BoardRepository(_virtualLibraryDbContext);
+        public ICardListRepository CardLists => _cardLists ??= new CardListRepository(_virtualLibraryDbContext);
+        public ICardRepository Cards => _cards ??= new CardRepository(_virtualLibraryDbContext);
 
-        //TODO usar lazy inicialation
-
-        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IUserRepository users, IStudyRoomRepository studyRooms, IHttpContextAccessor httpContextAccessor, IStudyRoomUserRepository studyRoomUser, INotificationRepository notification, IUserFriendRepository userFriend, IBoardRepository boards, ICardListRepository cardLists, ICardRepository cards)
+        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IHttpContextAccessor httpContextAccessor, IUserRepository users)
         {
             _virtualLibraryDbContext = VirtualLibraryDbContext;
             _httpContextAccessor = httpContextAccessor;
             Users = users;
-            StudyRooms = studyRooms;
-            StudyRoomUser = studyRoomUser;
-            Notifications = notification;
-            UserFriends = userFriend;
-            Boards = boards;
-            CardLists = cardLists;
-            Cards = cards;
         }
 
         public async Task<int> SaveChanges()
