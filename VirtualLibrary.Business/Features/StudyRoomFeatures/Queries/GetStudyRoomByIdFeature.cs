@@ -1,13 +1,13 @@
 ﻿
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
+using VirtualLibrary.Domain.Common;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Queries.GetStudyRoomByIdFeature;
 
 namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Queries
 {
-    public partial class GetStudyRoomByIdFeature : IRequestHandler<GetStudyRoomByIdQuery, IActionResult>
+    public partial class GetStudyRoomByIdFeature : IRequestHandler<GetStudyRoomByIdQuery, Result<GetStudyRoomByIdDto>>
     {
         private readonly IVirtualLibraryUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -18,15 +18,15 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Queries
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Handle(GetStudyRoomByIdQuery request, CancellationToken cancellationToken)
+        public async Task< Result<GetStudyRoomByIdDto>> Handle(GetStudyRoomByIdQuery request, CancellationToken cancellationToken)
         {
             var room = await _unitOfWork.StudyRooms.GetById(request.RoomId);
 
-            if (room == null) return new NotFoundObjectResult(new { ErrorMessage = "La sala no existe" });
+            if (room == null) return Result<GetStudyRoomByIdDto>.Failure("La sala no existe");
 
             var result = _mapper.Map<GetStudyRoomByIdDto>(room);
 
-            return new OkObjectResult(result);
+            return Result<GetStudyRoomByIdDto>.Success(result);
         }
     }
 }

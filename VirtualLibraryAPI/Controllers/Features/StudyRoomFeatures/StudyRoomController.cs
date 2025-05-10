@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.AddStudyRoomFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.DeleteStudyRoomFeature;
 using static VirtualLibrary.Application.Features.StudyRoomFeatures.Commands.UpdateRoomTimerFeature;
@@ -60,19 +61,34 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
         [HttpGet("getStudyRoomsByOwner")]
         public async Task<IActionResult> GetStudyRoomsByOwner([FromQuery] GetStudyRoomsByOwnerQuery request)
         {
-            return await _mediator.Send(request);
+            var result = await _mediator.Send(request);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpGet("getInvitedStudyRooms")]
         public async Task<IActionResult> GetStudyRoomsByUser([FromQuery] GetInvitedStudyRoomsQuery request)
         {
-            return await _mediator.Send(request);
+            var result = await _mediator.Send(request);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpGet("getStudyRoomById")]
         public async Task<IActionResult> GetStudyRoomById([FromQuery] GetStudyRoomByIdQuery request)
         {
-            return await _mediator.Send(request);
+            var result = await _mediator.Send(request);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpPut("updateRoomTimer")]
