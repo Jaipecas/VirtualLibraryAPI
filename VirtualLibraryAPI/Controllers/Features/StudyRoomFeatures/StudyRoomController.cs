@@ -38,7 +38,12 @@ namespace VirtualLibraryAPI.Controllers.Features.StudyRoomFeatures
         [HttpDelete()]
         public async Task<IActionResult> DeleteStudyRoom([FromQuery] DeleteStudyRoomCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { result.Errors });
+
+            return Ok(result.Value);
         }
 
         [HttpPut()]
