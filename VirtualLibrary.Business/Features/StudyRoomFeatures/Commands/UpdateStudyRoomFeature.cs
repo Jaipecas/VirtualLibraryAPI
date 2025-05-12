@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using VirtualLibrary.Application.Persistence;
 using VirtualLibrary.Domain.Common;
 using VirtualLibrary.Domain.Constants;
@@ -35,27 +34,44 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
                 var roomUsersIds = studyRoom?.StudyRoomUsers?.Select(su => su.UserId).ToList();
 
+                //Si hay nuevos usuarios se crea la notificación y el user en la room
                 var newUsers = users.Where(user => !roomUsersIds.Contains(user.Id)).ToList();
 
-                var notifications = newUsers.Select(user => new RoomNotification
+                if (newUsers.Count > 0)
                 {
-                    SenderId = studyRoom!.OwnerId,
-                    RecipientId = user.Id,
-                    Title = $"Invitación Sala: {studyRoom.Name}",
-                    Message = $"{studyRoom.Description}",
-                    RoomId = studyRoom.Id,
-                    NotificationType = NotificationTypes.RoomNotification
-                }).ToList();
+                    var notifications = newUsers.Select(user => new RoomNotification
+                    {
+                        SenderId = studyRoom!.OwnerId,
+                        RecipientId = user.Id,
+                        Title = $"Invitación Sala: {studyRoom.Name}",
+                        Message = $"{studyRoom.Description}",
+                        RoomId = studyRoom.Id,
+                        NotificationType = NotificationTypes.RoomNotification
+                    }).ToList();
 
-                notifications.ForEach(async notification => await _unitOfWork.Notifications.Add(notification));
+                    notifications.ForEach(async notification => await _unitOfWork.Notifications.Add(notification));
 
-                newUsers.ForEach(async user => await _unitOfWork.StudyRoomUser.Add(new StudyRoomUser { UserId = user.Id, StudyRoomId = studyRoom.Id }));
+                    newUsers.ForEach(async user => await _unitOfWork.StudyRoomUser.Add(new StudyRoomUser { UserId = user.Id, StudyRoomId = studyRoom.Id }));
+                }
+
+                //Si se han eliminado usuarios, se elimina
+
+                var deletedUsersIds = roomUsersIds!
+                                           .Except(users.Select(user => user.Id))
+                                           .Where(id => id != studyRoom!.OwnerId).ToList();
+
+                if (deletedUsersIds.Count > 0)
+                {
+                    await _unitOfWork.StudyRoomUser.DeleteRoomUsers(studyRoom!.Id, deletedUsersIds);
+                    await _unitOfWork.Notifications.DeleteRoomNotifications(studyRoom!.Id, deletedUsersIds);
+                }
             }
 
             if (request?.UsersIds?.Count == 0)
             {
                 var removeUsers = studyRoom!.StudyRoomUsers!.Where(ru => ru.UserId != studyRoom.OwnerId).ToList();
                 _unitOfWork.StudyRoomUser.RemoveRoomUsers(removeUsers);
+                await _unitOfWork.Notifications.DeleteRoomNotifications(studyRoom!.Id, []);
             }
 
             await _unitOfWork.SaveChanges();
@@ -64,6 +80,5 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             return Result<UpdateStudyRoomDto>.Success(result);
         }
-
     }
 }
