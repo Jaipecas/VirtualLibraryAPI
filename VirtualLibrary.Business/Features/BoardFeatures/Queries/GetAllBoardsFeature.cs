@@ -20,6 +20,10 @@ namespace VirtualLibrary.Application.Features.BoardFeatures.Queries
 
         public async Task<Result<List<GetAllBoardsDto>>> Handle(GetAllBoardsQuery request, CancellationToken cancellationToken)
         {
+            var user = await _unitOfWork.Users.FindByIdAsync(request.UserId!);
+
+            if (user == null) return Result<List<GetAllBoardsDto>>.Failure($"El usuario con id {request.UserId} no existe");
+
             var boards = await _unitOfWork.Boards.GetAllUserBoards(request.UserId!);
 
             if (boards.Count == 0) return Result<List<GetAllBoardsDto>>.Success([]);
