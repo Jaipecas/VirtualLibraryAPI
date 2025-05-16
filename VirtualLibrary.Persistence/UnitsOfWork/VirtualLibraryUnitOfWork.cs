@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using VirtualLibrary.Application.Persistence;
@@ -13,6 +14,7 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
     {
         private readonly VirtualLibraryDbContext _virtualLibraryDbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<User> _userManager;
 
         private IStudyRoomRepository? _studyRooms;
         private IStudyRoomUserRepository? _studyRoomUser;
@@ -21,8 +23,9 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
         private IBoardRepository? _boards;
         private ICardListRepository? _cardLists;
         private ICardRepository? _cards;
+        private IUserRepository? _users;
 
-        public IUserRepository Users { get; }
+        public IUserRepository Users => _users ??= new UserRepository(_userManager);
         public IStudyRoomRepository StudyRooms => _studyRooms ??= new StudyRoomRepository(_virtualLibraryDbContext);
         public IStudyRoomUserRepository StudyRoomUser => _studyRoomUser ??= new StudyRoomUserRepository(_virtualLibraryDbContext);
         public INotificationRepository Notifications => _notifications ??= new NotificationRepository(_virtualLibraryDbContext);
@@ -31,11 +34,11 @@ namespace VirtualLibrary.Persistence.UnitsOfWork
         public ICardListRepository CardLists => _cardLists ??= new CardListRepository(_virtualLibraryDbContext);
         public ICardRepository Cards => _cards ??= new CardRepository(_virtualLibraryDbContext);
 
-        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IHttpContextAccessor httpContextAccessor, IUserRepository users)
+        public VirtualLibraryUnitOfWork(VirtualLibraryDbContext VirtualLibraryDbContext, IHttpContextAccessor httpContextAccessor, UserManager<User> userManager)
         {
             _virtualLibraryDbContext = VirtualLibraryDbContext;
             _httpContextAccessor = httpContextAccessor;
-            Users = users;
+            _userManager = userManager;
         }
 
         public async Task<int> SaveChanges()
