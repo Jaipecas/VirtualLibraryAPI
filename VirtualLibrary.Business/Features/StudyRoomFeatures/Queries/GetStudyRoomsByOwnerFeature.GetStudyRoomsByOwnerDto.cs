@@ -23,7 +23,6 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Queries
         public class PomodoroDto
         {
             public required int Id { get; set; }
-            public required string Name { get; set; }
             public required int PomodoroTime { get; set; }
             public required int BreakTime { get; set; }
         }

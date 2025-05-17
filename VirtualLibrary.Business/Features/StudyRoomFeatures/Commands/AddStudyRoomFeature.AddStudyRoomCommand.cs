@@ -17,7 +17,6 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
         public class PomodoroCommand
         {
-            public string? Name { get; set; }
             public int? PomodoroTime { get; set; }
             public int? BreakTime { get; set; }
         }

@@ -15,7 +15,6 @@
         public class GetStudyRoomByIdPomodoroDto
         {
             public required int Id { get; set; }
-            public required string Name { get; set; }
             public required int PomodoroTime { get; set; }
             public required int BreakTime { get; set; }
             public DateTime? EndTime { get; set; }
