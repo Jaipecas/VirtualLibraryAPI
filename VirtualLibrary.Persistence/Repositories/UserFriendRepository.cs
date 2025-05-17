@@ -18,5 +18,18 @@ namespace VirtualLibrary.Persistence.Repositories
         {
             return await _virtualLibraryContext.UserFriends.AnyAsync(userFriend => userFriend.FriendId == friendId);
         }
+
+        public bool RemoveFriend(string userId, string friendId)
+        {
+            var userFriend = _virtualLibraryContext.UserFriends.SingleOrDefault(uf => uf.UserId == userId && uf.FriendId == friendId);
+
+            if (userFriend != null) _virtualLibraryContext.UserFriends.Remove(userFriend);
+
+            var friendUser = _virtualLibraryContext.UserFriends.SingleOrDefault(uf => uf.UserId == friendId && uf.FriendId == userId);
+
+            if (friendUser != null) _virtualLibraryContext.UserFriends.Remove(friendUser);
+
+            return true;
+        }
     }
 }
