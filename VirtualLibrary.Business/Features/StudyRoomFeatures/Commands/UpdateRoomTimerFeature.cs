@@ -20,7 +20,7 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
         public async Task<Result<UpdateRoomTimerPomodoroDto>> Handle(UpdateRoomTimerCommand request, CancellationToken cancellationToken)
         {
-            var room = await _unitOfWork.StudyRooms.GetById(request.RoomId);
+            var room = await _unitOfWork.StudyRooms.GetById((int)request.RoomId!);
 
             if (room == null) return Result<UpdateRoomTimerPomodoroDto>.Failure("No se ha encontrado la sala");
 
@@ -28,8 +28,16 @@ namespace VirtualLibrary.Application.Features.StudyRoomFeatures.Commands
 
             if (pomodoro == null) return Result<UpdateRoomTimerPomodoroDto>.Failure("No se ha encontrado el pomodoro");
 
-            pomodoro.IsStudyTime = request.IsStudyTime;
-            pomodoro.EndTime = DateTime.Now.AddMinutes(request.IsStudyTime ? pomodoro.PomodoroTime : pomodoro.BreakTime);
+            if (request.IsRestart != null && (bool) request.IsRestart)
+            {
+                pomodoro.IsStudyTime = null;
+                pomodoro.EndTime = null;
+            }
+            else
+            {
+                pomodoro.IsStudyTime = request.IsStudyTime;
+                pomodoro.EndTime = DateTime.Now.AddMinutes((bool)request.IsStudyTime! ? pomodoro.PomodoroTime : pomodoro.BreakTime);
+            }
 
             await _unitOfWork.SaveChanges();
 
