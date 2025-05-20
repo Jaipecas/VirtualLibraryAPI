@@ -92,12 +92,24 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+//Migracion tablas a Azure -- mejor quitarlo en PRO
+
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var dbContext = scope.ServiceProvider.GetRequiredService<VirtualLibraryDbContext>();
+    if (dbContext.Database.IsRelational())
+    {
+        dbContext.Database.Migrate();
+    }
 }
+
+
+// Configure the HTTP request pipeline.
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseHttpsRedirection();
 
