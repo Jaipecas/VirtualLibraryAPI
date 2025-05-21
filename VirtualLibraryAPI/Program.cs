@@ -79,7 +79,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("https://localhost:5173")
+            policy.WithOrigins("https://reliable-bienenstitch-9260e7.netlify.app")
                   .AllowCredentials()
                   .AllowAnyMethod()
                   .AllowAnyHeader();
