@@ -26,7 +26,7 @@ namespace VirtualLibrary.Application.Features.Auth.Commands
 
             public async Task<Result<SignUpDto>> Handle(SignUpCommand request, CancellationToken cancellationToken)
             {
-                var user = new User { UserName = request.UserName, Email = request.Email };
+                var user = new User { UserName = request.UserName, Email = request.Email, Logo = request.Logo };
 
                 var userEmail = await _virtualLibraryUnitOfWork.Users.FindByEmailAsync(user.Email);
 
